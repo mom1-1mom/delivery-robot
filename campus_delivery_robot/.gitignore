@@ -1,0 +1,7 @@
+.venv/
+.venv-win/
+__pycache__/
+*.py[cod]
+.streamlit/
+.pytest_cache/
+streamlit*.log

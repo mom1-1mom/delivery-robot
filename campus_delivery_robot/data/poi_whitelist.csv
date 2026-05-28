@@ -1,0 +1,301 @@
+﻿enabled,display_name,original_name,category,osm_id,source,lat,lon,nearest_graph_node,nearest_distance_m,component_size,note
+1,Building A Bicycle Parking Lot,A座自行车停车场,amenity,382883994,named_amenity,28.1543298,112.9364513,9468073870,4.1,1672,recommended
+1,Central South University Lunan Campus,中南大学（麓南校区）,amenity,533289733,named_amenity,28.1645896,112.9312249,1659032532,25.5,1672,recommended
+1,Building 24,24栋,building,383029907,named_building,28.1669060,112.9324655,9490554024,28.1,1672,recommended
+1,Building A,A座,building,382786880,named_building,28.1537414,112.9361222,10969079179,51.4,1672,recommended
+1,Building B,B座,building,382796822,named_building,28.1532781,112.9361918,9464597656,37.7,1672,recommended
+1,Building C,C座,building,382796818,named_building,28.1525490,112.9363444,9464597657,30.1,1672,recommended
+1,Building D,D座,building,381902395,named_building,28.1519275,112.9362002,3860289437,59.6,1672,recommended
+1,CSU Security Office,中南大学 保卫科,building,382873118,named_building,28.1509195,112.9312367,9483370957,18.5,1672,recommended
+1,CSU Logistics Maintenance Service Center,中南大学后勤保障部修建服务中心,building,1029446397,named_building,28.1676012,112.9316892,9512719785,29.6,1672,recommended
+1,"CSU Swimming, Badminton and Basketball Gym",中南大学游泳馆&羽毛球馆&篮球馆,building,983556518,named_building,28.1580755,112.9307462,9457760947,97.2,1672,recommended
+1,"CSU Swimming, Badminton and Basketball Gym 2",中南大学游泳馆&羽毛球馆&篮球馆 (2),building,1253865410,named_building,28.1583250,112.9299958,9457760944,45.4,1672,recommended
+1,CSU School of Socialism,中南大学社会主义学院,building,382863480,named_building,28.1658459,112.9320781,9512737246,70.3,1672,recommended
+1,Yunluyuan Community Service Center,云麓园社区公共服务中心,building,382878553,named_building,28.1674563,112.9328123,9512719783,16.9,1672,recommended
+1,School of Chemistry and Chemical Engineering,化学化工学院,building,382873097,named_building,28.1507992,112.9413176,9463877057,43.2,1672,recommended
+1,Building B Canteen,B座食堂,canteen,3860991308,named_node,28.1534636,112.9367079,9464597669,77.2,1672,recommended
+1,No. 7 Canteen Xiyangyang Supermarket,七食堂喜洋洋超市,canteen,5714793110,named_node,28.1625124,112.9318936,1659009967,12.3,1672,recommended
+1,CSU No. 7 Canteen,中南大学七食堂,canteen,381465646,named_amenity,28.1622787,112.9321396,1659009968,34.3,1672,recommended
+1,CSU No. 2 Canteen,中南大学二食堂,canteen,1660218369,named_node,28.1624862,112.9299892,1659032513,28.6,1672,recommended
+1,CSU No. 8 Canteen,中南大学八食堂,canteen,1308886013,named_node,28.1604100,112.9317231,1659009982,29.7,1672,recommended
+1,CSU No. 8 Canteen 2,中南大学八食堂 (2),canteen,381465668,named_amenity,28.1603995,112.9315823,1659009990,25.4,1672,recommended
+1,No. 2 Canteen Parking Lot,二食堂停车场,canteen,970822829,named_amenity,28.1621210,112.9298100,9493016096,12.9,1672,recommended
+1,CSU Student Dormitory,中南大学学生公寓,dormitory,1660229551,named_node,28.1589523,112.9317850,3860724154,35.7,1672,recommended
+1,Shenghua Dormitory Buildings 37 and 38,升华公寓 37 38栋,dormitory,1029393714,named_building,28.1649852,112.9290028,9490553994,25.3,1672,recommended
+1,Shenghua Dormitory Clinic,升华公寓医务室,dormitory,5724482046,named_node,28.1615004,112.9308347,9493016110,6.6,1672,recommended
+1,Shenghua Student Dormitory Building 1 North,升华学生公寓 1 栋北,dormitory,381465664,named_building,28.1595894,112.9320048,3860724157,23.2,1672,recommended
+1,Shenghua Student Dormitory Building 10,升华学生公寓 10 栋,dormitory,381465682,named_building,28.1607451,112.9307885,1659009981,18.7,1672,recommended
+1,Shenghua Student Dormitory Building 11,升华学生公寓 11 栋,dormitory,381465663,named_building,28.1610610,112.9306349,3846693955,11.4,1672,recommended
+1,Shenghua Student Dormitory Building 13,升华学生公寓 13 栋,dormitory,381465647,named_building,28.1612641,112.9297908,9490764412,32.2,1672,recommended
+1,Shenghua Student Dormitory Building 14,升华学生公寓 14 栋,dormitory,381465645,named_building,28.1617155,112.9293032,1659009979,18.1,1672,recommended
+1,Shenghua Student Dormitory Building 15,升华学生公寓 15 栋,dormitory,381465657,named_building,28.1620632,112.9289279,1659009962,20.4,1672,recommended
+1,Shenghua Student Dormitory Building 16,升华学生公寓 16 栋,dormitory,381465678,named_building,28.1624251,112.9286621,3846694366,23.9,1672,recommended
+1,Shenghua Student Dormitory Building 18,升华学生公寓 18 栋,dormitory,381465676,named_building,28.1614001,112.9307047,3846693954,19.4,1672,recommended
+1,Shenghua Student Dormitory Building 2,升华学生公寓 2 栋,dormitory,381465674,named_building,28.1599323,112.9318964,3860724155,22.7,1672,recommended
+1,Shenghua Student Dormitory Building 20,升华学生公寓 20 栋,dormitory,381465661,named_building,28.1619434,112.9306747,9493053148,30.9,1672,recommended
+1,Shenghua Student Dormitory Building 21,升华学生公寓 21 栋,dormitory,279349826,named_building,28.1622903,112.9306683,1659009956,33.1,1672,recommended
+1,Shenghua Student Dormitory Building 24,升华学生公寓 24 栋,dormitory,155469202,named_building,28.1626079,112.9307318,1659009978,34.9,1672,recommended
+1,Shenghua Student Dormitory Building 25,升华学生公寓 25 栋,dormitory,381465683,named_building,28.1629407,112.9301362,1659032401,29.9,1672,recommended
+1,Shenghua Student Dormitory Building 26,升华学生公寓 26 栋,dormitory,381465667,named_building,28.1629077,112.9295980,1659032472,16.1,1672,recommended
+1,Shenghua Student Dormitory Building 28 North,升华学生公寓 28 栋北,dormitory,381465652,named_building,28.1634911,112.9280798,5722864488,30.7,1672,recommended
+1,Shenghua Student Dormitory Building 28 South,升华学生公寓 28 栋南,dormitory,381465648,named_building,28.1631430,112.9281839,5722864491,34.6,1672,recommended
+1,Shenghua Student Dormitory Building 29,升华学生公寓 29 栋,dormitory,381465654,named_building,28.1632884,112.9294187,3846694261,16.1,1672,recommended
+1,Shenghua Student Dormitory Building 31,升华学生公寓 31 栋,dormitory,381465675,named_building,28.1639892,112.9292341,9490554010,38.9,1672,recommended
+1,Shenghua Student Dormitory Building 5,升华学生公寓 5 栋,dormitory,381465671,named_building,28.1601728,112.9309282,1659009984,26.2,1672,recommended
+1,Shenghua Student Dormitory Building 6,升华学生公寓 6 栋,dormitory,381465651,named_building,28.1603514,112.9305058,3860723208,26.1,1672,recommended
+1,Shenghua Student Dormitory Building 8,升华学生公寓 8 栋,dormitory,381465639,named_building,28.1607950,112.9313778,5720359856,17.9,1672,recommended
+1,Shenghua Student Dormitory Building 9,升华学生公寓 9 栋,dormitory,381465677,named_building,28.1607860,112.9317698,1659009965,21.1,1672,recommended
+1,Shenghua Student Dormitory Building 17,升华学生公寓17栋,dormitory,381465672,named_building,28.1612336,112.9310810,3846694446,12.2,1672,recommended
+1,Shenghua West Entrance,Shenghua West Entrance,gate,3846694426,named_node,28.1643185,112.9275197,3846694426,0.0,1672,recommended
+1,East Gate Shuttle Stop,东大门;校车停靠站,gate,3860823686,named_node,28.1543327,112.9452421,9457761123,47.1,1672,recommended
+1,CSU South Campus North Gate,中南大学南校区北门,gate,9336861707,named_node,28.1684180,112.9310532,9336861707,0.0,1672,recommended
+1,CSU South Campus North Gate 2,中南大学南校区北门 (2),gate,9492064598,named_node,28.1684227,112.9311083,9492064598,0.0,1672,recommended
+1,CSU New Campus North Gate,中南大学新校区北门,gate,5718877690,named_node,28.1545289,112.9359184,11655806637,14.2,1672,recommended
+1,North Gate 1,北一门,gate,8938951568,named_node,28.1548730,112.9425501,8938951568,0.0,1672,recommended
+1,South Gate,南门,gate,3861856292,named_node,28.1494978,112.9372965,3861856292,0.0,1672,recommended
+1,New Campus Stadium West Gate,新校体育场“鸟巢”西门,gate,5718999075,named_node,28.1591612,112.9267032,9483371093,24.6,1672,recommended
+1,CSU Library Front Square,中南大学图书馆前坪,library,382796824,named_leisure,28.1534132,112.9377863,3860902010,14.0,1672,recommended
+1,CSU Library Shuttle Stop,中南大学图书馆校车停靠站,library,3860723694,named_node,28.1529323,112.9383048,3860723694,0.0,1672,recommended
+1,CSU New Campus Library,中南大学新校区 图书馆,library,3860056604,named_node,28.1531281,112.9389928,9464597804,70.3,1672,recommended
+1,Library Front Bicycle Parking Area,图书馆前自行车停靠点,library,5724336929,named_node,28.1531506,112.9378233,3860902011,35.6,1672,recommended
+1,Huanghe Hospital,黄鹤医院,medical,3862410562,named_node,28.1477045,112.9388441,3861856319,204.9,1672,recommended
+1,CSU South Campus Security Office,中南大学保卫处南校区保卫科,office,9491091572,named_node,28.1633125,112.9324056,10994902453,39.9,1672,recommended
+1,China Post,中国邮政,service,1660218390,named_node,28.1603831,112.9306002,1659009980,23.6,1672,recommended
+1,Chunzhiniao Supermarket,春之鸟超市,shop,1660209321,named_node,28.1609810,112.9300768,1659009971,35.6,1672,recommended
+1,New Campus Stadium,新校体育场,sports,3860139781,named_node,28.1568223,112.9286506,3660285774,130.2,1672,recommended
+1,CSU Comprehensive Building,中南大学综合楼,teaching_building,382863592,named_building,28.1642320,112.9305511,9512737273,37.8,1672,recommended
+1,CSU Lecture Hall,中南讲堂,teaching_building,3860056591,named_node,28.1525489,112.9390736,9464597797,49.5,1672,recommended
+1,Bingqing Building,兵卿楼,teaching_building,1029393717,named_building,28.1637110,112.9266231,9490554072,22.7,1672,recommended
+1,Mechanical and Electrical Building Bicycle Parking Area,机电楼自行车停放处,teaching_building,3861006539,named_node,28.1511856,112.9345553,3860322247,13.9,1672,recommended
+0,D座前坪,D座前坪,other,382796825,named_leisure,28.1519118,112.9376729,9464597734,17.4,1672,low_value_for_delivery_demo
+0,upper seat,upper seat,other,5377819123,named_node,28.1491241,112.9355572,3861859261,59.4,1672,low_value_for_delivery_demo
+0,中南大学新校区,中南大学新校区,other,3861012158,named_node,28.1545978,112.9378544,9457761206,52.0,1672,low_value_for_delivery_demo
+0,中南大学新校区 (2),中南大学新校区 (2),other,9492064538,named_node,28.1547030,112.9375160,3860723300,56.7,1672,low_value_for_delivery_demo
+0,丰顺路麻园路口,丰顺路麻园路口,other,9501052868,named_node,28.1492040,112.9407010,3861847069,45.0,1672,noisy_or_numeric_name
+0,丰顺路麻园路口 (2),丰顺路麻园路口 (2),other,9501052869,named_node,28.1492493,112.9413935,9463877085,28.8,1672,low_value_for_delivery_demo
+0,丰顺路黄鹤路口,丰顺路黄鹤路口,other,9501052872,named_node,28.1495312,112.9329109,3861856295,68.0,1672,noisy_or_numeric_name
+0,后湖小区南 (2),后湖小区南 (2),other,9492064535,named_node,28.1547873,112.9346779,9467930573,49.5,1672,low_value_for_delivery_demo
+0,天天向上幼稚园,天天向上幼稚园,other,3862410559,named_node,28.1475197,112.9378705,9455737121,213.6,1672,low_value_for_delivery_demo
+0,左家垅西,左家垅西,other,5714522628,named_node,28.1685006,112.9304729,9492064619,44.4,1672,low_value_for_delivery_demo
+0,校车停靠站,校车停靠站,other,3861006538,named_node,28.1508907,112.9361666,3860289438,10.6,1672,low_value_for_delivery_demo
+0,水果店,水果店,other,5715415732,named_node,28.1622965,112.9318980,3860723703,18.4,1672,low_value_for_delivery_demo
+0,沙泥塘,沙泥塘,other,5724482045,named_node,28.1582150,112.9268135,11655823331,30.7,1672,low_value_for_delivery_demo
+0,淹鱼塘,淹鱼塘,other,1660236528,named_node,28.1604727,112.9297391,1659009952,43.4,1672,low_value_for_delivery_demo
+0,磨子山,磨子山,other,4814789367,named_node,28.1637793,112.9274690,3846694286,32.0,1672,low_value_for_delivery_demo
+0,老四川石锅鱼,老四川石锅鱼,other,4702794689,named_node,28.1618186,112.9317179,1659009957,16.0,1672,low_value_for_delivery_demo
+0,靳江路潇湘路口,靳江路潇湘路口,other,9503200454,named_node,28.1554065,112.9446272,9457761132,51.6,1672,noisy_or_numeric_name
+0,靳江路潇湘路口 (2),靳江路潇湘路口 (2),other,9503200455,named_node,28.1551265,112.9433314,9464413036,47.9,1672,low_value_for_delivery_demo
+0,靳江路西二环路口,靳江路西二环路口,other,13436838794,named_node,28.1549639,112.9301061,9457760975,64.6,1672,noisy_or_numeric_name
+0,靳江路西二环路口 (2),靳江路西二环路口 (2),other,13481260074,named_node,28.1547629,112.9278425,9448530129,60.6,1672,low_value_for_delivery_demo
+0,韩国炸鸡,韩国炸鸡,other,9298206425,named_node,28.1670380,112.9300662,9512737225,110.9,1672,low_value_for_delivery_demo
+0,深夜食堂,深夜食堂,canteen,4810101914,named_node,28.1558254,112.9327945,3862341751,35.7,365,outside_largest_routing_component
+0,中南小当家学生餐厅,中南小当家学生餐厅,food,3862351131,named_node,28.1568046,112.9340564,3862341741,24.4,365,outside_largest_routing_component
+0,小李小饭,小李小饭,food,10020233823,named_node,28.1610438,112.9408741,11687459817,52.0,365,outside_largest_routing_component
+0,岳麓餐馆,岳麓餐馆,food,4813623187,named_node,28.1577853,112.9332108,9462243482,22.6,365,outside_largest_routing_component
+0,资溪面包,资溪面包,food,5713755275,named_node,28.1553224,112.9335781,3862341866,36.4,365,outside_largest_routing_component
+0,阿Q桶饭,阿Q桶饭,food,5713755273,named_node,28.1554845,112.9338753,3862341865,22.1,365,outside_largest_routing_component
+0,岳麓图书馆,岳麓图书馆,library,10020233824,named_node,28.1603177,112.9404783,11687459809,40.6,365,outside_largest_routing_component
+0,2,2,other,12989005262,named_node,28.1579297,112.9325292,9482908708,4.8,365,outside_largest_routing_component
+0,3,3,other,12989005263,named_node,28.1580682,112.9320640,9482908709,52.2,365,outside_largest_routing_component
+0,4,4,other,12989005264,named_node,28.1569599,112.9318884,9462243463,41.1,365,outside_largest_routing_component
+0,Central South University,Central South University,other,7666490743,named_node,28.1578368,112.9322974,9482908701,19.7,365,outside_largest_routing_component
+0,万德时尚酒店,万德时尚酒店,other,4809604877,named_node,28.1575799,112.9340086,9482908713,36.9,365,outside_largest_routing_component
+0,东北饺子馆,东北饺子馆,other,3862351125,named_node,28.1555408,112.9323970,3862341869,24.7,365,outside_largest_routing_component
+0,中南大学地铁站,中南大学地铁站,other,9492064532,named_node,28.1576363,112.9321463,3862341729,30.0,365,outside_largest_routing_component
+0,中南大学地铁站 (2),中南大学地铁站 (2),other,9492064533,named_node,28.1556939,112.9319831,9462243469,19.2,365,outside_largest_routing_component
+0,何计粥铺,何计粥铺,other,9280793080,named_node,28.1556357,112.9329273,3862341753,22.6,365,outside_largest_routing_component
+0,后湖复印社,后湖复印社,other,4813618505,named_node,28.1564898,112.9325387,9462243465,29.5,365,outside_largest_routing_component
+0,后湖小区东,后湖小区东,other,9492064536,named_node,28.1551940,112.9359086,11659279341,16.7,365,outside_largest_routing_component
+0,后湖小区北,后湖小区北,other,5721948296,named_node,28.1580085,112.9333780,4810103891,20.0,365,outside_largest_routing_component
+0,后湖小区北 (2),后湖小区北 (2),other,9492064531,named_node,28.1582450,112.9329949,9482908704,25.3,365,outside_largest_routing_component
+0,后湖小区南,后湖小区南,other,9492064534,named_node,28.1547552,112.9328259,3925863120,31.6,365,outside_largest_routing_component
+0,唐家洲,唐家洲,other,9501052880,named_node,28.1624136,112.9414212,11687459824,36.1,365,outside_largest_routing_component
+0,唐家洲 (2),唐家洲 (2),other,9501052881,named_node,28.1608953,112.9403990,11687459815,22.9,365,outside_largest_routing_component
+0,岳麓派出所麓枫社区警务室,岳麓派出所麓枫社区警务室,other,10020233834,named_node,28.1606824,112.9424314,11687459818,208.5,365,outside_largest_routing_component
+0,文志艺术学校,文志艺术学校,other,3862417144,named_node,28.1592699,112.9358970,11655787716,15.5,365,outside_largest_routing_component
+0,晨光文具,晨光文具,other,5713755274,named_node,28.1557339,112.9335358,3862341862,30.6,365,outside_largest_routing_component
+0,清水路公交首末站,清水路公交首末站,other,9501097190,named_node,28.1578607,112.9352078,9501097190,0.0,365,outside_largest_routing_component
+0,湘龙幼儿园,湘龙幼儿园,other,3862417143,named_node,28.1586815,112.9348461,711531316,17.0,365,outside_largest_routing_component
+0,烤鱼,烤鱼,other,5724434605,named_node,28.1560850,112.9337323,12595614917,1.5,365,outside_largest_routing_component
+0,益禾堂,益禾堂,other,5721948295,named_node,28.1560893,112.9333491,3862341858,12.4,365,outside_largest_routing_component
+0,蜀签签,蜀签签,other,4813623189,named_node,28.1574974,112.9342368,9482908714,28.9,365,outside_largest_routing_component
+0,魔锅坊,魔锅坊,other,4813623188,named_node,28.1575110,112.9341505,9462243494,37.2,365,outside_largest_routing_component
+0,交通银行（长沙岳麓山支行）,交通银行（长沙岳麓山支行）,service,10020233821,named_node,28.1613825,112.9414132,11687459822,84.8,365,outside_largest_routing_component
+0,湖南湘江新区农村商业银行,湖南湘江新区农村商业银行,service,4809604879,named_node,28.1579307,112.9326584,9482908703,7.3,365,outside_largest_routing_component
+0,后湖批发超市,后湖批发超市,shop,3862351126,named_node,28.1555868,112.9335032,3862341864,29.3,365,outside_largest_routing_component
+0,实惠超市,实惠超市,shop,3862351133,named_node,28.1562560,112.9334160,3862341756,19.5,365,outside_largest_routing_component
+0,家利购生鲜超市后湖店,家利购生鲜超市后湖店,shop,3862351129,named_node,28.1572409,112.9341401,3862341735,25.9,365,outside_largest_routing_component
+0,渔夫生活超市,渔夫生活超市,shop,3862351127,named_node,28.1560514,112.9329318,3862341747,24.3,365,outside_largest_routing_component
+0,锦和便利超市后湖店,锦和便利超市后湖店,shop,3862351132,named_node,28.1569554,112.9330194,3862341734,19.4,365,outside_largest_routing_component
+0,T当代艺术中心,T当代艺术中心,amenity,1094105672,named_amenity,28.1644620,112.9424354,9535108217,37.9,261,outside_largest_routing_component
+0,阜埠河地铁站 (2),阜埠河地铁站 (2),other,3184256904,named_node,28.1691546,112.9428688,11117432883,114.1,261,outside_largest_routing_component
+0,万科金域缇香1栋,万科金域缇香1栋,building,1026505186,named_building,28.1497602,112.9447104,9464412977,16.5,180,outside_largest_routing_component
+0,万科金域缇香2栋,万科金域缇香2栋,building,1026505185,named_building,28.1506016,112.9447390,9464412957,19.1,180,outside_largest_routing_component
+0,万科金域缇香3栋,万科金域缇香3栋,building,1026505184,named_building,28.1516488,112.9448525,9464412941,23.6,180,outside_largest_routing_component
+0,万科金域缇香4栋,万科金域缇香4栋,building,1026505183,named_building,28.1525506,112.9448949,9464412929,20.5,180,outside_largest_routing_component
+0,猴子石大桥北,猴子石大桥北,other,9501052884,named_node,28.1482588,112.9453225,9464412971,135.5,180,outside_largest_routing_component
+0,猴子石大桥北 (2),猴子石大桥北 (2),other,9501052885,named_node,28.1476957,112.9454197,9464280647,197.1,180,outside_largest_routing_component
+0,靳江路口,靳江路口,other,9501052874,named_node,28.1537620,112.9459697,9464280649,90.5,180,outside_largest_routing_component
+0,蔚然锦和超市,蔚然锦和超市,shop,3862410571,named_node,28.1507811,112.9433516,9464280722,19.2,180,outside_largest_routing_component
+0,Building of Knowledge of Hunan Normal University,Building of Knowledge of Hunan Normal University,building,1008006669,named_building,28.1708629,112.9322937,9499990139,47.4,169,outside_largest_routing_component
+0,Design building of Hunan Normal University,Design building of Hunan Normal University,building,1008006665,named_building,28.1703564,112.9322454,711502349,39.2,169,outside_largest_routing_component
+0,Hunan Normal University (South Campus)- School of Fine Arts,Hunan Normal University (South Campus)- School of Fine Arts,building,1008006661,named_building,28.1695971,112.9324344,711502202,33.6,169,outside_largest_routing_component
+0,Music College of Hunan Normal University,Music College of Hunan Normal University,building,602765343,named_building,28.1699866,112.9331532,711502267,28.9,169,outside_largest_routing_component
+0,湖大德智园学生公寓,湖大德智园学生公寓,dormitory,11359803017,named_node,28.1652835,112.9349488,3442405595,55.0,169,outside_largest_routing_component
+0,"Lanzhou noodles, China","Lanzhou noodles, China",food,9299427873,named_node,28.1699392,112.9340720,9492158866,34.9,169,outside_largest_routing_component
+0,North No.2 Gate of Hunan Normal University,North No.2 Gate of Hunan Normal University,gate,9299427871,named_node,28.1693386,112.9337551,9299427871,0.0,169,outside_largest_routing_component
+0,岳麓书院西门,岳麓书院西门,gate,12495502995,named_node,28.1840735,112.9341160,711502300,884.9,169,outside_largest_routing_component
+0,ChuYa hotel,ChuYa hotel,other,9299427874,named_node,28.1698237,112.9339871,9499989925,24.1,169,outside_largest_routing_component
+0,Zuojialong bus station,Zuojialong bus station,other,9299427870,named_node,28.1696491,112.9342207,9492994575,44.7,169,outside_largest_routing_component
+0,万家灯火,万家灯火,other,9492994569,named_node,28.1688752,112.9325183,711503022,27.7,169,outside_largest_routing_component
+0,Bank of Communications,Bank of Communications,service,9492994567,named_node,28.1689029,112.9328693,9492994565,11.2,169,outside_largest_routing_component
+0,Bay leaf bookstore,Bay leaf bookstore,shop,1008006663,named_building,28.1693818,112.9326769,9492994538,27.8,169,outside_largest_routing_component
+0,体育馆,体育馆,sports,888585845,named_building,28.1689510,112.9340675,9492158867,35.4,169,outside_largest_routing_component
+0,体育教学楼,体育教学楼,teaching_building,1029683914,named_building,28.1675371,112.9342856,9299427885,34.2,169,outside_largest_routing_component
+0,1 (2),1 (2),building,1472351144,named_building,28.1677161,112.9198594,13509493771,16.2,150,outside_largest_routing_component
+0,10,10,building,1472351160,named_building,28.1689706,112.9205705,13509493812,45.4,150,outside_largest_routing_component
+0,11,11,building,1472351161,named_building,28.1680481,112.9213194,13509493984,15.7,150,outside_largest_routing_component
+0,12,12,building,1472351162,named_building,28.1686539,112.9215736,13509493963,25.8,150,outside_largest_routing_component
+0,13,13,building,1472351163,named_building,28.1693710,112.9216922,13508567351,31.1,150,outside_largest_routing_component
+0,15,15,building,1472351164,named_building,28.1699300,112.9216506,13509493957,15.4,150,outside_largest_routing_component
+0,16,16,building,1472351165,named_building,28.1695889,112.9221169,13509493952,26.1,150,outside_largest_routing_component
+0,17,17,building,1472351166,named_building,28.1692316,112.9223375,13509493971,24.2,150,outside_largest_routing_component
+0,18,18,building,1472351167,named_building,28.1695364,112.9226720,13509493949,18.6,150,outside_largest_routing_component
+0,19,19,building,1472351168,named_building,28.1695928,112.9230787,13509493935,20.4,150,outside_largest_routing_component
+0,2 (2),2 (2),building,1472351145,named_building,28.1680496,112.9189838,13509493791,41.6,150,outside_largest_routing_component
+0,20,20,building,1472351169,named_building,28.1696226,112.9235608,13509493937,27.6,150,outside_largest_routing_component
+0,21,21,building,1472351170,named_building,28.1687644,112.9221633,13509493927,30.4,150,outside_largest_routing_component
+0,22,22,building,1472351171,named_building,28.1682439,112.9219620,13509493925,29.2,150,outside_largest_routing_component
+0,23,23,building,1472351172,named_building,28.1678032,112.9216862,13509493919,22.9,150,outside_largest_routing_component
+0,26,26,building,1472351113,named_building,28.1669991,112.9201124,13509493698,39.3,150,outside_largest_routing_component
+0,27,27,building,1472351158,named_building,28.1680920,112.9205408,13509493799,42.7,150,outside_largest_routing_component
+0,28,28,building,1472351173,named_building,28.1673643,112.9209966,13509493915,34.3,150,outside_largest_routing_component
+0,3 (2),3 (2),building,1472351146,named_building,28.1685615,112.9185928,13509493789,10.8,150,outside_largest_routing_component
+0,5,5,building,1472351147,named_building,28.1686307,112.9190638,13509493786,35.2,150,outside_largest_routing_component
+0,6,6,building,1472351148,named_building,28.1684805,112.9197288,13509493760,23.8,150,outside_largest_routing_component
+0,7,7,building,1472351149,named_building,28.1682250,112.9194147,13509493804,14.6,150,outside_largest_routing_component
+0,8,8,building,1472351150,named_building,28.1680897,112.9198355,13509493803,20.1,150,outside_largest_routing_component
+0,9,9,building,1472351159,named_building,28.1685316,112.9206495,13509493813,53.1,150,outside_largest_routing_component
+0,D1,D1,building,1472351134,named_building,28.1689451,112.9229397,13509493930,40.3,150,outside_largest_routing_component
+0,王家湾北,王家湾北,other,9441038613,named_node,28.1662860,112.9193492,13509493710,94.1,150,outside_largest_routing_component
+0,1,1,other,12985710270,named_node,28.1979697,112.9631072,12525726755,705.6,143,outside_largest_routing_component
+0,Lingguandu,Lingguandu,other,9759323099,named_node,28.1827711,112.9650688,1955397263,826.5,143,outside_largest_routing_component
+0,Pointing to the Country,Pointing to the Country,other,4393295094,named_node,28.1690122,112.9546724,1955397333,5.2,143,outside_largest_routing_component
+0,Railway Station,Railway Station,other,9759323134,named_node,28.1975665,113.0054022,12525726761,4701.1,143,outside_largest_routing_component
+0,Wangjiangting Pavilion,Wangjiangting Pavilion,other,4393509891,named_node,28.1694367,112.9547483,3741318539,1.3,143,outside_largest_routing_component
+0,Wentiantai terrace,Wentiantai terrace,other,4393297493,named_node,28.1685193,112.9546017,12525726711,28.6,143,outside_largest_routing_component
+0,Young Mao Zedong Statue,Young Mao Zedong Statue,other,1165042478,named_tourism,28.1710498,112.9548382,3741318550,21.3,143,outside_largest_routing_component
+0,“Qinyuanchun Changsha” Poem Monument,“Qinyuanchun Changsha” Poem Monument,other,12669416201,named_node,28.1719653,112.9549805,3741318560,9.9,143,outside_largest_routing_component
+0,橘子洲头,橘子洲头,other,3741318540,named_node,28.1701708,112.9548198,3741318540,0.0,143,outside_largest_routing_component
+0,D2,D2,building,1472351133,named_building,28.1682783,112.9227007,13509493659,30.2,117,outside_largest_routing_component
+0,E1,E1,building,1472351130,named_building,28.1672318,112.9228283,13509493643,2.2,117,outside_largest_routing_component
+0,E2,E2,building,1472351132,named_building,28.1674373,112.9239024,13509493642,43.9,117,outside_largest_routing_component
+0,F1,F1,building,1472351114,named_building,28.1663067,112.9220029,10060561903,32.0,117,outside_largest_routing_component
+0,F2,F2,building,1472351115,named_building,28.1663542,112.9224288,13509493576,27.1,117,outside_largest_routing_component
+0,F4,F4,building,1472351117,named_building,28.1659306,112.9225005,10060561914,33.5,117,outside_largest_routing_component
+0,G1,G1,building,1472351118,named_building,28.1663045,112.9230856,13509493535,24.4,117,outside_largest_routing_component
+0,G2,G2,building,1472351119,named_building,28.1663991,112.9237757,13509493536,34.7,117,outside_largest_routing_component
+0,G5,G5,building,1472351122,named_building,28.1655637,112.9230704,13509493543,22.9,117,outside_largest_routing_component
+0,G6,G6,building,1472351123,named_building,28.1655578,112.9235710,13509466797,22.5,117,outside_largest_routing_component
+0,G7,G7,building,1472351124,named_building,28.1657393,112.9239354,13509493542,22.6,117,outside_largest_routing_component
+0,H1,H1,building,1472351128,named_building,28.1663973,112.9243709,13509493538,36.9,117,outside_largest_routing_component
+0,H2,H2,building,1472351129,named_building,28.1658418,112.9245653,13509493586,21.3,117,outside_largest_routing_component
+0,中南大学 (2),中南大学 (2),other,9440261614,named_node,28.1671204,112.9262621,9439734527,13.7,117,outside_largest_routing_component
+0,中南大学九食堂,中南大学九食堂,canteen,382987023,named_amenity,28.1714714,112.9270910,9440395514,27.6,107,outside_largest_routing_component
+0,Burger King,Burger King,food,9440272233,named_node,28.1674352,112.9284457,9439673383,56.3,107,outside_largest_routing_component
+0,Bank of China (2),Bank of China (2),service,757850391,named_amenity,28.1713727,112.9271929,9440395495,16.8,107,outside_largest_routing_component
+0,五个厨子,五个厨子,other,3862409991,named_node,28.1494443,112.9303201,9460851942,65.6,101,outside_largest_routing_component
+0,后湖路丰顺路口 (2),后湖路丰顺路口 (2),other,13481260075,named_node,28.1485457,112.9315403,9460851939,148.1,101,outside_largest_routing_component
+0,飞利浦净水器,飞利浦净水器,other,3862409983,named_node,28.1493119,112.9311355,9460851940,64.0,101,outside_largest_routing_component
+0,博学便利店,博学便利店,shop,3862409982,named_node,28.1492930,112.9294189,9460851966,44.1,101,outside_largest_routing_component
+0,樟树门,樟树门,gate,9448587406,named_node,28.1652482,112.9170361,11828727514,167.9,95,outside_largest_routing_component
+0,王家湾,王家湾,other,9441042917,named_node,28.1643474,112.9215234,9441038564,41.3,95,outside_largest_routing_component
+0,王家湾  立交,王家湾  立交,other,9441038606,named_node,28.1650715,112.9208843,9659209854,86.5,95,outside_largest_routing_component
+0,王家湾 (4),王家湾 (4),other,9448565078,named_node,28.1653032,112.9193047,9441038571,10.5,95,outside_largest_routing_component
+0,1区1栋,1区1栋,building,308049358,named_building,28.1694683,112.9401851,3162474196,36.1,90,outside_largest_routing_component
+0,1区2栋,1区2栋,building,308049359,named_building,28.1697738,112.9402483,2774453999,42.5,90,outside_largest_routing_component
+0,2区2栋,2区2栋,building,1229018638,named_building,28.1703603,112.9393469,3184239214,36.1,90,outside_largest_routing_component
+0,2区3栋,2区3栋,building,1229018639,named_building,28.1700677,112.9394982,2774454012,35.8,90,outside_largest_routing_component
+0,2区7栋,2区7栋,building,1229018641,named_building,28.1684684,112.9393981,11397544335,38.0,90,outside_largest_routing_component
+0,3区10栋,3区10栋,building,1229018625,named_building,28.1691411,112.9409378,2774453990,38.8,90,outside_largest_routing_component
+0,3区11栋,3区11栋,building,1229018626,named_building,28.1688494,112.9409411,11397544332,35.4,90,outside_largest_routing_component
+0,3区12栋,3区12栋,building,312552705,named_building,28.1688096,112.9400100,2774453988,27.7,90,outside_largest_routing_component
+0,3区13栋,3区13栋,building,308049356,named_building,28.1684852,112.9401661,2774453986,32.2,90,outside_largest_routing_component
+0,3区16栋,3区16栋,building,312552704,named_building,28.1688262,112.9416698,11397544329,25.9,90,outside_largest_routing_component
+0,3区17栋,3区17栋,building,308049355,named_building,28.1684831,112.9408428,2774453989,28.3,90,outside_largest_routing_component
+0,3区18栋,3区18栋,building,1229018627,named_building,28.1684822,112.9414158,2774453992,16.2,90,outside_largest_routing_component
+0,3区20栋,3区20栋,building,1229018628,named_building,28.1684663,112.9420264,11397544330,26.2,90,outside_largest_routing_component
+0,3区9栋,3区9栋,building,310762328,named_building,28.1694487,112.9411026,2774454010,35.5,90,outside_largest_routing_component
+0,湖南大学天马学生公寓,湖南大学天马学生公寓,dormitory,3726033230,named_node,28.1713765,112.9403805,9441042988,8.6,90,outside_largest_routing_component
+0,湖南大学医院天马保健所,湖南大学医院天马保健所,medical,3133310982,named_node,28.1689439,112.9394110,2774454007,18.9,90,outside_largest_routing_component
+0,Fubuhe,Fubuhe,other,5697304719,named_node,28.1692583,112.9424230,2774453991,90.2,90,outside_largest_routing_component
+0,Hunan Normal University,Hunan Normal University,other,6504722452,named_node,28.1893998,112.9427735,3442629034,1179.5,90,outside_largest_routing_component
+0,新学生事务大厅,新学生事务大厅,other,3184256906,named_node,28.1707453,112.9399503,2774453997,21.1,90,outside_largest_routing_component
+0,阜埠河地铁站,阜埠河地铁站,other,3184256903,named_node,28.1691183,112.9427185,3162474185,104.6,90,outside_largest_routing_component
+0,麓山南路口,麓山南路口,other,3133310983,named_node,28.1721813,112.9396929,12420174246,19.6,90,outside_largest_routing_component
+0,Bank of China,Bank of China,service,3202641238,named_node,28.1706202,112.9395714,3184239218,28.4,90,outside_largest_routing_component
+0,乐尔乐超市,乐尔乐超市,shop,3190132272,named_node,28.1699578,112.9414722,2774454000,61.1,90,outside_largest_routing_component
+0,实竹塘 (2),实竹塘 (2),other,9501052879,named_node,28.1577543,112.9385228,10020546019,25.1,89,outside_largest_routing_component
+0,中南大学附属中学,中南大学附属中学,amenity,644418419,named_amenity,28.1708112,112.9219774,9450281447,53.1,70,outside_largest_routing_component
+0,中南大学（岳麓山校区）,中南大学（岳麓山校区）,amenity,1028934324,named_amenity,28.1736101,112.9234636,9440608810,16.4,70,outside_largest_routing_component
+0,中南大学汽车队,中南大学汽车队,building,712603885,named_building,28.1699940,112.9254629,5168550722,28.3,70,outside_largest_routing_component
+0,中南大学老年活动中心,中南大学老年活动中心,building,1023783422,named_building,28.1699169,112.9245126,2302026327,27.5,70,outside_largest_routing_component
+0,冶金馆,冶金馆,building,382877670,named_building,28.1724001,112.9242588,2302020184,33.2,70,outside_largest_routing_component
+0,KFC (2),KFC (2),food,5330624566,named_node,28.1666497,112.9272885,9440261550,94.0,58,outside_largest_routing_component
+0,Yuelu,Yuelu,other,8532774977,named_node,28.1641497,112.9241872,9440606349,50.6,58,outside_largest_routing_component
+0,中南大学,中南大学,other,9439673317,named_node,28.1665304,112.9269595,9440261540,75.8,58,outside_largest_routing_component
+0,王家湾东,王家湾东,other,711491662,named_node,28.1649883,112.9243254,9440606355,26.3,58,outside_largest_routing_component
+0,王家湾东 (2),王家湾东 (2),other,9448565076,named_node,28.1649314,112.9236135,9440606354,37.7,58,outside_largest_routing_component
+0,Shantang,Shantang,other,6147461112,named_node,28.1021885,112.9204207,7049605166,4780.9,57,outside_largest_routing_component
+0,千里香混沌饺子店,千里香混沌饺子店,other,3862409987,named_node,28.1476470,112.9284104,7049605146,11.1,57,outside_largest_routing_component
+0,味忆童年儿时味道管,味忆童年儿时味道管,other,3862409989,named_node,28.1485173,112.9302557,9462242597,137.7,57,outside_largest_routing_component
+0,开胃王冒菜,开胃王冒菜,other,3862409988,named_node,28.1478362,112.9294832,9462242592,67.6,57,outside_largest_routing_component
+0,洋湖新城,洋湖新城,other,5697304710,named_node,28.1319375,112.9396691,7049605153,1697.6,57,outside_largest_routing_component
+0,老百姓大药房,老百姓大药房,other,3862409984,named_node,28.1468902,112.9283889,9464460943,9.2,57,outside_largest_routing_component
+0,麦浪饼屋,麦浪饼屋,other,3862409986,named_node,28.1477416,112.9301699,9462242593,125.0,57,outside_largest_routing_component
+0,2区4栋,2区4栋,building,308049366,named_building,28.1695268,112.9393495,8686557179,38.8,40,outside_largest_routing_component
+0,九栋,九栋,building,937059227,named_building,28.1700971,112.9385568,8686557182,28.1,40,outside_largest_routing_component
+0,八栋,八栋,building,937059228,named_building,28.1703608,112.9384956,8686557180,25.9,40,outside_largest_routing_component
+0,十栋,十栋,building,937059226,named_building,28.1698346,112.9385594,8686557164,32.2,40,outside_largest_routing_component
+0,实竹塘,实竹塘,other,9501052878,named_node,28.1574028,112.9372539,11655823292,10.5,40,outside_largest_routing_component
+0,中建智慧谷大楼,中建智慧谷大楼,teaching_building,1253172471,named_building,28.1563923,112.9366807,11655823321,27.0,40,outside_largest_routing_component
+0,中建智慧谷大楼 (2),中建智慧谷大楼 (2),teaching_building,1253172472,named_building,28.1563527,112.9381706,11655823311,40.2,40,outside_largest_routing_component
+0,中南大学校碑,中南大学校碑,other,5344997561,named_node,28.1699498,112.9264271,9440896834,24.1,36,outside_largest_routing_component
+0,Juzizhou,Juzizhou,other,8532774980,named_node,28.1682828,112.9458440,11880731239,20.1,35,outside_largest_routing_component
+0,何润公园,何润公园,other,6910885076,named_node,28.1670086,112.9451174,5288889442,64.3,35,outside_largest_routing_component
+0,阜埠河路,阜埠河路,other,3184256920,named_node,28.1671667,112.9466323,11117432863,68.3,35,outside_largest_routing_component
+0,阜埠河路口,阜埠河路口,other,3130994656,named_node,28.1678111,112.9482401,11117432874,17.2,35,outside_largest_routing_component
+0,天凤社区,天凤社区,other,9501052894,named_node,28.1613406,112.9443939,5288889455,130.8,26,outside_largest_routing_component
+0,阜埠河路口 (2),阜埠河路口 (2),other,9501052893,named_node,28.1659708,112.9483595,5288889447,87.2,26,outside_largest_routing_component
+0,科教新村,科教新村,other,3130994654,named_node,28.1716966,112.9418172,3202641433,64.6,25,outside_largest_routing_component
+0,科教新村 (2),科教新村 (2),other,9509812811,named_node,28.1715330,112.9416257,3202641450,69.2,25,outside_largest_routing_component
+0,Bishahu (2),Bishahu (2),other,11092706406,named_node,28.1677259,112.9622913,6081027853,78.0,15,outside_largest_routing_component
+0,菲歌量贩式KTV,菲歌量贩式KTV,other,9298206424,named_node,28.1675359,112.9302518,9492158862,86.3,12,outside_largest_routing_component
+0,岳麓街道五星村卫生室,岳麓街道五星村卫生室,other,3862410009,named_node,28.1489650,112.9237593,711528401,145.3,9,outside_largest_routing_component
+0,KFC,KFC,food,3287267936,named_node,28.1722780,112.9385446,11021954413,72.2,8,outside_largest_routing_component
+0,Houjiatang,Houjiatang,other,9759445223,named_node,28.1772887,112.9766006,8979313985,1458.3,8,outside_largest_routing_component
+0,中国建设银行,中国建设银行,service,3287267937,named_node,28.1723876,112.9388186,11021954418,47.3,8,outside_largest_routing_component
+0,王家湾 (2),王家湾 (2),other,9441042929,named_node,28.1652526,112.9214698,13509493569,63.5,7,outside_largest_routing_component
+0,王家湾 (3),王家湾 (3),other,9448565077,named_node,28.1649234,112.9225037,9511118186,45.9,7,outside_largest_routing_component
+0,王家湾 (5),王家湾 (5),other,9457971866,named_node,28.1640870,112.9228707,711518796,93.0,7,outside_largest_routing_component
+0,五星小学,五星小学,amenity,657415497,named_amenity,28.1469632,112.9219872,11815953001,99.9,6,outside_largest_routing_component
+0,Bishahu,Bishahu,other,6504722427,named_node,28.1678282,112.9622762,7791284249,83.7,6,outside_largest_routing_component
+0,东塘,东塘,other,5697308832,named_node,28.1728741,112.9880424,3640667710,2303.9,6,outside_largest_routing_component
+0,后湖路丰顺路口,后湖路丰顺路口,other,13436838793,named_node,28.1474991,112.9317785,4193563817,209.5,6,outside_largest_routing_component
+0,大梅沙海鲜汇,大梅沙海鲜汇,other,3862410582,named_node,28.1487368,112.9363670,4193563815,93.9,6,outside_largest_routing_component
+0,小脚丫双语幼儿园,小脚丫双语幼儿园,other,3862410007,named_node,28.1470633,112.9238456,11815953004,60.9,6,outside_largest_routing_component
+0,湘铭艺术学校,湘铭艺术学校,other,3862410010,named_node,28.1487055,112.9234257,11815953005,186.6,6,outside_largest_routing_component
+0,长沙南站旧址,长沙南站旧址,other,3363289708,named_node,28.1686951,112.9609755,3640713114,83.6,6,outside_largest_routing_component
+0,麻园路南二环路口,麻园路南二环路口,other,9503200452,named_node,28.1443113,112.9384144,3862410047,472.6,6,outside_largest_routing_component
+0,聚鲜楼,聚鲜楼,teaching_building,3862410034,named_node,28.1477586,112.9354320,9467990991,44.5,6,outside_largest_routing_component
+0,58众创,58众创,building,1035131039,named_building,28.1585613,112.9456401,11880731289,82.0,5,outside_largest_routing_component
+0,Tianhe Pharmacy,Tianhe Pharmacy,other,9299427901,named_node,28.1701685,112.9350219,9299427904,24.0,5,outside_largest_routing_component
+0,后湖,后湖,other,9501052876,named_node,28.1597420,112.9475635,11880731286,64.4,5,outside_largest_routing_component
+0,China Mobile,China Mobile,service,9299427876,named_node,28.1699549,112.9343654,9299427903,28.0,5,outside_largest_routing_component
+0,中南大学出版社,中南大学出版社,building,1023670140,named_building,28.1726664,112.9268946,9447657855,48.2,4,outside_largest_routing_component
+0,中南大学本部图书馆,中南大学本部图书馆,library,791601351,named_building,28.1728472,112.9261244,7400360566,75.9,4,outside_largest_routing_component
+0,天马山东,天马山东,other,3130994655,named_node,28.1744461,112.9463485,3464569094,7.0,4,outside_largest_routing_component
+0,天马山东 (2),天马山东 (2),other,9509812812,named_node,28.1740307,112.9455356,3464569096,76.2,4,outside_largest_routing_component
+0,天马村,天马村,other,9501052882,named_node,28.1668668,112.9443659,11880731266,101.5,3,outside_largest_routing_component
+0,千惠超市（潇湘中路店）,千惠超市（潇湘中路店）,shop,10020233832,named_node,28.1605317,112.9423310,10023084408,205.3,3,outside_largest_routing_component
+0,Sexytea,Sexytea,other,9440395460,named_node,28.1670355,112.9271806,9440608771,96.0,2,outside_largest_routing_component

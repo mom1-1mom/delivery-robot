@@ -151,7 +151,6 @@ def build_graph(nodes: dict[str, dict[str, Any]], ways: list[dict[str, Any]]) ->
 
 def apply_route_preferences(
     graph: nx.Graph,
-    avoid_service_roads: bool = False,
     prefer_footways: bool = False,
 ) -> nx.Graph:
     """Return a graph copy with user-selected route preference penalties."""
@@ -161,8 +160,6 @@ def apply_route_preferences(
         highway = data.get("highway")
         cost = float(data.get("base_cost", data.get("cost", data.get("distance", 1.0))))
 
-        if avoid_service_roads and highway == "service":
-            cost *= 2.5
         if prefer_footways and highway not in {"footway", "pedestrian"}:
             cost *= 1.15
 
@@ -354,4 +351,3 @@ def extract_pois(
             fallback_index += 1
 
     return _make_unique_display_names(pois[:max_pois])
-

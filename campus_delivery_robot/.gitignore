@@ -2,6 +2,6 @@
 .venv-win/
 __pycache__/
 *.py[cod]
-.streamlit/
+.streamlit/secrets.toml
 .pytest_cache/
 streamlit*.log

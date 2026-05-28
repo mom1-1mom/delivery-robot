@@ -7,21 +7,28 @@ from heapq import heappop, heappush
 from itertools import count
 from typing import Any
 
-from .utils import calculate_path_cost, haversine_distance
+from .utils import calculate_path_cost, calculate_path_distance, haversine_distance
+
+
+MAX_EXPLORED_EDGES = 10_000
 
 
 def _result(
     path: list[str],
     total_cost: float,
+    total_distance: float,
     expanded_nodes: int,
     success: bool,
     message: str,
+    explored_edges: list[tuple[str, str]] | None = None,
 ) -> dict[str, Any]:
     """Create a consistent algorithm result dictionary."""
     return {
         "path": path,
         "total_cost": total_cost,
+        "total_distance": total_distance,
         "expanded_nodes": expanded_nodes,
+        "explored_edges": explored_edges or [],
         "success": success,
         "message": message,
     }
@@ -47,6 +54,24 @@ def _reconstruct_path(parent: dict[str, str | None], goal: str) -> list[str]:
     return path
 
 
+def _record_explored_edge(
+    explored_edges: list[tuple[str, str]],
+    seen_edges: set[tuple[str, str]],
+    u: str,
+    v: str,
+    max_edges: int = MAX_EXPLORED_EDGES,
+) -> None:
+    """Record a unique explored edge while keeping memory bounded."""
+    if len(explored_edges) >= max_edges:
+        return
+    edge = (str(u), str(v))
+    reverse_edge = (edge[1], edge[0])
+    if edge in seen_edges or reverse_edge in seen_edges:
+        return
+    explored_edges.append(edge)
+    seen_edges.add(edge)
+
+
 def bfs_search(graph: Any, start: str, goal: str, max_expansions: int = 250_000) -> dict[str, Any]:
     """
     Breadth-first search.
@@ -55,33 +80,60 @@ def bfs_search(graph: Any, start: str, goal: str, max_expansions: int = 250_000)
     """
     error = _validate_nodes(graph, start, goal)
     if error:
-        return _result([], 0.0, 0, False, error)
+        return _result([], 0.0, 0.0, 0, False, error)
     if start == goal:
-        return _result([start], 0.0, 0, True, "Start and goal are the same node.")
+        return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
     queue = deque([start])
     parent: dict[str, str | None] = {start: None}
     expanded = 0
+    explored_edges: list[tuple[str, str]] = []
+    seen_edges: set[tuple[str, str]] = set()
 
     while queue:
         current = queue.popleft()
         expanded += 1
 
         if expanded > max_expansions:
-            return _result([], 0.0, expanded, False, "Search stopped after reaching the expansion limit.")
+            return _result(
+                [],
+                0.0,
+                0.0,
+                expanded,
+                False,
+                "Search stopped after reaching the expansion limit.",
+                explored_edges,
+            )
 
         if current == goal:
             path = _reconstruct_path(parent, goal)
-            return _result(path, calculate_path_cost(graph, path), expanded, True, "Route found with BFS.")
+            return _result(
+                path,
+                float(max(0, len(path) - 1)),
+                calculate_path_distance(graph, path),
+                expanded,
+                True,
+                "Route found with BFS.",
+                explored_edges,
+            )
 
         for neighbor in graph.neighbors(current):
             neighbor = str(neighbor)
+            _record_explored_edge(explored_edges, seen_edges, current, neighbor)
             if neighbor in parent:
                 continue
             parent[neighbor] = current
             queue.append(neighbor)
 
-    return _result([], 0.0, expanded, False, "No route found between the selected locations.")
+    return _result(
+        [],
+        0.0,
+        0.0,
+        expanded,
+        False,
+        "No route found between the selected locations.",
+        explored_edges,
+    )
 
 
 def uniform_cost_search(
@@ -95,9 +147,9 @@ def uniform_cost_search(
     """
     error = _validate_nodes(graph, start, goal)
     if error:
-        return _result([], 0.0, 0, False, error)
+        return _result([], 0.0, 0.0, 0, False, error)
     if start == goal:
-        return _result([start], 0.0, 0, True, "Start and goal are the same node.")
+        return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
     tie_breaker = count()
     frontier: list[tuple[float, int, str]] = []
@@ -105,6 +157,8 @@ def uniform_cost_search(
     best_cost: dict[str, float] = {start: 0.0}
     parent: dict[str, str | None] = {start: None}
     expanded_nodes: set[str] = set()
+    explored_edges: list[tuple[str, str]] = []
+    seen_edges: set[tuple[str, str]] = set()
 
     while frontier:
         current_cost, _, current = heappop(frontier)
@@ -116,25 +170,44 @@ def uniform_cost_search(
             return _result(
                 [],
                 0.0,
+                0.0,
                 len(expanded_nodes),
                 False,
                 "Search stopped after reaching the expansion limit.",
+                explored_edges,
             )
 
         if current == goal:
             path = _reconstruct_path(parent, goal)
-            return _result(path, current_cost, len(expanded_nodes), True, "Route found with UCS.")
+            return _result(
+                path,
+                current_cost,
+                calculate_path_distance(graph, path),
+                len(expanded_nodes),
+                True,
+                "Route found with UCS.",
+                explored_edges,
+            )
 
         for neighbor in graph.neighbors(current):
             neighbor = str(neighbor)
             edge_cost = float(graph[current][neighbor].get("cost", graph[current][neighbor].get("distance", 1.0)))
             new_cost = current_cost + edge_cost
             if new_cost < best_cost.get(neighbor, float("inf")):
+                _record_explored_edge(explored_edges, seen_edges, current, neighbor)
                 best_cost[neighbor] = new_cost
                 parent[neighbor] = current
                 heappush(frontier, (new_cost, next(tie_breaker), neighbor))
 
-    return _result([], 0.0, len(expanded_nodes), False, "No route found between the selected locations.")
+    return _result(
+        [],
+        0.0,
+        0.0,
+        len(expanded_nodes),
+        False,
+        "No route found between the selected locations.",
+        explored_edges,
+    )
 
 
 def _heuristic(graph: Any, node: str, goal: str) -> float:
@@ -158,9 +231,9 @@ def astar_search(graph: Any, start: str, goal: str, max_expansions: int = 250_00
     """
     error = _validate_nodes(graph, start, goal)
     if error:
-        return _result([], 0.0, 0, False, error)
+        return _result([], 0.0, 0.0, 0, False, error)
     if start == goal:
-        return _result([start], 0.0, 0, True, "Start and goal are the same node.")
+        return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
     tie_breaker = count()
     frontier: list[tuple[float, int, str]] = []
@@ -168,6 +241,8 @@ def astar_search(graph: Any, start: str, goal: str, max_expansions: int = 250_00
     best_g: dict[str, float] = {start: 0.0}
     parent: dict[str, str | None] = {start: None}
     expanded_nodes: set[str] = set()
+    explored_edges: list[tuple[str, str]] = []
+    seen_edges: set[tuple[str, str]] = set()
 
     while frontier:
         _, _, current = heappop(frontier)
@@ -179,26 +254,45 @@ def astar_search(graph: Any, start: str, goal: str, max_expansions: int = 250_00
             return _result(
                 [],
                 0.0,
+                0.0,
                 len(expanded_nodes),
                 False,
                 "Search stopped after reaching the expansion limit.",
+                explored_edges,
             )
 
         if current == goal:
             path = _reconstruct_path(parent, goal)
-            return _result(path, best_g[current], len(expanded_nodes), True, "Route found with A*.")
+            return _result(
+                path,
+                best_g[current],
+                calculate_path_distance(graph, path),
+                len(expanded_nodes),
+                True,
+                "Route found with A*.",
+                explored_edges,
+            )
 
         for neighbor in graph.neighbors(current):
             neighbor = str(neighbor)
             edge_cost = float(graph[current][neighbor].get("cost", graph[current][neighbor].get("distance", 1.0)))
             tentative_g = best_g[current] + edge_cost
             if tentative_g < best_g.get(neighbor, float("inf")):
+                _record_explored_edge(explored_edges, seen_edges, current, neighbor)
                 best_g[neighbor] = tentative_g
                 parent[neighbor] = current
                 f_score = tentative_g + _heuristic(graph, neighbor, goal)
                 heappush(frontier, (f_score, next(tie_breaker), neighbor))
 
-    return _result([], 0.0, len(expanded_nodes), False, "No route found between the selected locations.")
+    return _result(
+        [],
+        0.0,
+        0.0,
+        len(expanded_nodes),
+        False,
+        "No route found between the selected locations.",
+        explored_edges,
+    )
 
 
 ALGORITHMS = {
@@ -206,4 +300,3 @@ ALGORITHMS = {
     "Uniform Cost Search": uniform_cost_search,
     "A* Search": astar_search,
 }
-

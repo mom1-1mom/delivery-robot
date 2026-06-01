@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 from html import escape
+from io import BytesIO
 from pathlib import Path
 import tempfile
 from typing import Any
@@ -12,6 +13,8 @@ import networkx as nx
 import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
+
+from src.congestion_model import TrafficCongestionModel
 
 from src.algorithms import ALGORITHMS
 from src.graph_builder import apply_route_preferences, build_graph, extract_pois
@@ -296,6 +299,34 @@ def format_poi_option(poi: dict[str, Any]) -> str:
     return str(poi.get("display_name", "Unnamed location"))
 
 
+@st.cache_resource(show_spinner=False)
+def load_traffic_model_from_csv(file_name: str, file_bytes: bytes) -> TrafficCongestionModel:
+    """Train and cache a traffic model from uploaded historical congestion data."""
+    dataframe = pd.read_csv(BytesIO(file_bytes))
+    model = TrafficCongestionModel()
+    model.train_from_dataframe(dataframe)
+    return model
+
+
+def format_train_rmse(value: float | None) -> str:
+    """Format the model validation RMSE for display."""
+    return f"{value:.1f} sec" if value is not None else "N/A"
+
+
+def render_congestion_model_summary(model: TrafficCongestionModel | None, hour: int, weekday: int = 0) -> None:
+    """Render the traffic model training summary in the sidebar."""
+    if model is None or not model.trained:
+        return
+
+    weekday_names = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    st.markdown("### Traffic Model Status")
+    st.write(
+        f"- Trained on **{model.train_samples:,} samples**  \n"
+        f"- Validation RMSE: **{format_train_rmse(model.train_rmse)}**  \n"
+        f"- Route costs use predicted travel time for **{weekday_names[weekday]} at {hour}:00**."
+    )
+
+
 def order_pois_for_routing(graph: Any, pois: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Sort POIs so connected, presentation-friendly choices appear first."""
     component_sizes: dict[str, int] = {}
@@ -475,6 +506,7 @@ def route_selection_key(
     delivery_pois: list[dict[str, Any]],
     algorithm_name: str,
     prefer_footways: bool,
+    departure_time: tuple[int, int] | None = None,
 ) -> tuple[Any, ...]:
     """Build a cache key for the currently selected route problem."""
     delivery_nodes = tuple(str(poi.get("nearest_graph_node", "")) for poi in delivery_pois)
@@ -484,6 +516,7 @@ def route_selection_key(
         delivery_nodes,
         algorithm_name,
         prefer_footways,
+        departure_time,
     )
 
 
@@ -566,6 +599,27 @@ def main() -> None:
         st.markdown("Route model")
         prefer_footways = st.checkbox("Prefer footways", value=True)
 
+        congestion_model: TrafficCongestionModel | None = None
+        departure_hour = 8
+        departure_weekday = 0
+        with st.expander("Traffic congestion model", expanded=False):
+            congestion_csv = st.file_uploader("Upload historical congestion CSV", type=["csv"], key="congestion_csv")
+            if congestion_csv is not None:
+                with st.spinner("Training traffic model..."):
+                    try:
+                        congestion_model = load_traffic_model_from_csv(congestion_csv.name, congestion_csv.getvalue())
+                        st.success("Traffic model trained.")
+                    except Exception as exc:
+                        st.error(f"Could not train traffic model: {exc}")
+            if congestion_model is not None and congestion_model.trained:
+                col1, col2 = st.columns(2)
+                with col1:
+                    departure_hour = st.slider("Departure hour", min_value=0, max_value=23, value=8, step=1)
+                with col2:
+                    weekday_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                    departure_weekday = st.selectbox("Day of week", list(range(7)), format_func=lambda x: weekday_names[x], index=0)
+            render_congestion_model_summary(congestion_model, departure_hour, departure_weekday)
+
         st.markdown("Search Process Visualization")
         show_search_process = st.checkbox("Show search process", value=True)
         final_route_only = st.checkbox("Final route only", value=False)
@@ -622,7 +676,14 @@ def main() -> None:
         generate_clicked = st.button("Generate Multi-stop Route", type="primary")
 
     validation_message = validate_delivery_selection(start_poi, delivery_pois)
-    selection_key = route_selection_key(metadata, start_poi, delivery_pois, algorithm_name, prefer_footways)
+    selection_key = route_selection_key(
+        metadata,
+        start_poi,
+        delivery_pois,
+        algorithm_name,
+        prefer_footways,
+        (departure_hour, departure_weekday) if congestion_model is not None and congestion_model.trained else None,
+    )
 
     if generate_clicked:
         if validation_message:
@@ -634,15 +695,47 @@ def main() -> None:
         else:
             with st.spinner("Calculating multi-stop route..."):
                 route_graph = apply_route_preferences(graph, prefer_footways=prefer_footways)
-                result = plan_multi_stop_route(
-                    route_graph,
-                    nodes,
-                    start_poi,
-                    delivery_pois,
-                    algorithm_name,
-                    resources.get("positions"),
-                    max_exact_stops=MAX_DELIVERY_POINTS,
-                )
+                if congestion_model is not None and congestion_model.trained:
+                    baseline_result = plan_multi_stop_route(
+                        route_graph,
+                        nodes,
+                        start_poi,
+                        delivery_pois,
+                        algorithm_name,
+                        resources.get("positions"),
+                        max_exact_stops=MAX_DELIVERY_POINTS,
+                    )
+                    trained_graph = congestion_model.apply_time_of_day_costs(route_graph, departure_hour, departure_weekday)
+                    result = plan_multi_stop_route(
+                        trained_graph,
+                        nodes,
+                        start_poi,
+                        delivery_pois,
+                        algorithm_name,
+                        resources.get("positions"),
+                        max_exact_stops=MAX_DELIVERY_POINTS,
+                    )
+                    if result.get("success") and baseline_result.get("success"):
+                        result["baseline_route"] = baseline_result
+                        result["baseline_predicted_route_time"] = float(
+                            congestion_model.predict_path_travel_time(
+                                route_graph,
+                                baseline_result.get("full_path", []),
+                                departure_hour,
+                                departure_weekday,
+                            )
+                        )
+                        result["trained_predicted_route_time"] = float(result.get("total_cost", 0.0))
+                else:
+                    result = plan_multi_stop_route(
+                        route_graph,
+                        nodes,
+                        start_poi,
+                        delivery_pois,
+                        algorithm_name,
+                        resources.get("positions"),
+                        max_exact_stops=MAX_DELIVERY_POINTS,
+                    )
                 result["selection_key"] = selection_key
                 st.session_state["multi_route_result"] = result
 

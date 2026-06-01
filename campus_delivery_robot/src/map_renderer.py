@@ -6,6 +6,7 @@ from html import escape
 from typing import Any
 
 import folium
+from branca.element import Element
 
 from .utils import get_graph_center
 
@@ -244,6 +245,99 @@ def _add_direction_marker(campus_map: folium.Map, coords: list[list[float]], lab
     ).add_to(campus_map)
 
 
+def _congestion_color(score: float, thresholds: list[float]) -> str:
+    if not thresholds or len(thresholds) != 3:
+        return "#16a34a"
+    if score <= thresholds[0]:
+        return "#16a34a"
+    if score <= thresholds[1]:
+        return "#facc15"
+    if score <= thresholds[2]:
+        return "#f97316"
+    return "#dc2626"
+
+
+def _add_congestion_legend(campus_map: folium.Map) -> None:
+    legend_html = """
+    <div style="position: fixed; bottom: 20px; left: 20px; width: 170px; z-index:9999; font-size:12px; color: #000;">
+        <div style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); color: #000;">
+            <strong style="color: #000;">Congestion key</strong><br>
+            <div style="display: flex; align-items: center; margin-top: 6px; color: #000;"><span style="background:#16a34a;width:14px;height:14px;display:inline-block;margin-right:8px;border-radius:3px"></span>Low</div>
+            <div style="display: flex; align-items: center; margin-top: 4px; color: #000;"><span style="background:#facc15;width:14px;height:14px;display:inline-block;margin-right:8px;border-radius:3px"></span>Moderate</div>
+            <div style="display: flex; align-items: center; margin-top: 4px; color: #000;"><span style="background:#f97316;width:14px;height:14px;display:inline-block;margin-right:8px;border-radius:3px"></span>High</div>
+            <div style="display: flex; align-items: center; margin-top: 4px; color: #000;"><span style="background:#dc2626;width:14px;height:14px;display:inline-block;margin-right:8px;border-radius:3px"></span>Severe</div>
+        </div>
+    </div>
+    """
+    legend = Element(legend_html)
+    campus_map.get_root().html.add_child(legend)
+
+
+def _add_congestion_overlay(
+    campus_map: folium.Map,
+    graph: Any,
+    model: Any,
+    hour: int,
+    weekday: int,
+    max_edges: int = 900,
+) -> None:
+    edge_items = list(graph.edges(data=True))
+    if not edge_items:
+        return
+
+    edge_step = max(1, len(edge_items) // max_edges)
+    sampled = edge_items[::edge_step]
+
+    edge_scores: list[float] = []
+    scored_edges: list[tuple[str, str, dict[str, Any], float, float]] = []
+    for u, v, data in sampled:
+        if not data:
+            continue
+        distance = float(data.get("distance", 0.0))
+        if distance <= 0:
+            continue
+        try:
+            predicted_time = model.predict_edge_travel_time(data, hour, weekday)
+        except Exception:
+            continue
+        score = predicted_time / max(distance, 1.0)
+        edge_scores.append(score)
+        scored_edges.append((u, v, data, score, predicted_time))
+
+    if not scored_edges:
+        return
+
+    edge_scores.sort()
+    if len(edge_scores) >= 4:
+        import statistics
+
+        thresholds = statistics.quantiles(edge_scores, n=4)
+    else:
+        thresholds = [edge_scores[0], edge_scores[-1] if len(edge_scores) > 1 else edge_scores[0], edge_scores[-1]]
+
+    congestion_group = folium.FeatureGroup(name="Predicted congestion overlay", show=True)
+    for u, v, data, score, predicted_time in scored_edges:
+        coords = _edge_coords(graph, (u, v))
+        if not coords:
+            continue
+        color = _congestion_color(score, thresholds)
+        tooltip = (
+            f"{escape(str(data.get('highway', 'unknown')))} | "
+            f"predicted {predicted_time:.1f}s | {score:.3f}s/m"
+        )
+        folium.PolyLine(
+            locations=coords,
+            color=color,
+            weight=4,
+            opacity=0.75,
+            tooltip=tooltip,
+        ).add_to(congestion_group)
+
+    congestion_group.add_to(campus_map)
+    folium.LayerControl(collapsed=True).add_to(campus_map)
+    _add_congestion_legend(campus_map)
+
+
 def render_multi_stop_map(
     nodes: Any,
     route_result: dict[str, Any] | None,
@@ -252,6 +346,10 @@ def render_multi_stop_map(
     search_progress: int = 100,
     final_route_only: bool = True,
     max_explored_edges: int = 1000,
+    congestion_model: Any | None = None,
+    departure_hour: int = 0,
+    departure_weekday: int = 0,
+    show_congestion_overlay: bool = False,
 ) -> folium.Map:
     """
     Render a multi-stop delivery map.
@@ -336,6 +434,9 @@ def render_multi_stop_map(
 
     for index, poi in enumerate(delivery_order, start=1):
         _numbered_stop_marker(campus_map, poi, index)
+
+    if congestion_model is not None and show_congestion_overlay:
+        _add_congestion_overlay(campus_map, graph, congestion_model, departure_hour, departure_weekday)
 
     bounds: list[list[float]] = []
     bounds.extend(route_coords)

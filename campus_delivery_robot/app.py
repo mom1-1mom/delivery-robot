@@ -66,9 +66,19 @@ def apply_page_style() -> None:
         [data-testid="stSidebar"] label,
         [data-testid="stSidebar"] label p,
         [data-testid="stSidebar"] .stCaptionContainer,
-        [data-testid="stSidebar"] .stCaptionContainer p,
-        [data-testid="stSidebar"] [data-testid="stFileUploader"] p {
-            color: #334155 !important;
+        [data-testid="stSidebar"] .stCaptionContainer p {
+            color: #000000 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] > div,
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] > div > div {
+            border: 1px solid #000000 !important;
+            background: #000000 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] p,
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] span,
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] label,
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] div {
+            color: #ffffff !important;
         }
         [data-testid="stSidebar"] [data-testid="stAlert"] p {
             color: #166534 !important;
@@ -592,7 +602,8 @@ def main() -> None:
 
     with st.sidebar:
         st.title("Route Controls")
-        uploaded_file = st.file_uploader("Upload .osm file", type=["osm", "xml"])
+        uploaded_file = None
+        st.caption("Using the default campus map data.")
         max_pois = st.slider("Maximum POIs", min_value=40, max_value=300, value=180, step=10)
         algorithm_name = st.selectbox("Algorithm", list(ALGORITHMS.keys()), index=2)
 
@@ -611,6 +622,7 @@ def main() -> None:
                         st.success("Traffic model trained.")
                     except Exception as exc:
                         st.error(f"Could not train traffic model: {exc}")
+            show_congestion_overlay = False
             if congestion_model is not None and congestion_model.trained:
                 col1, col2 = st.columns(2)
                 with col1:
@@ -618,6 +630,13 @@ def main() -> None:
                 with col2:
                     weekday_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
                     departure_weekday = st.selectbox("Day of week", list(range(7)), format_func=lambda x: weekday_names[x], index=0)
+
+                show_congestion_overlay = st.checkbox(
+                    "Show predicted congestion overlay",
+                    value=True,
+                    help="Display edge colors from green to red based on predicted congestion at the selected time.",
+                )
+
             render_congestion_model_summary(congestion_model, departure_hour, departure_weekday)
 
         st.markdown("Search Process Visualization")
@@ -754,6 +773,10 @@ def main() -> None:
         search_progress=search_progress,
         final_route_only=final_route_only,
         max_explored_edges=max_explored_edges,
+        congestion_model=congestion_model,
+        departure_hour=departure_hour,
+        departure_weekday=departure_weekday,
+        show_congestion_overlay=show_congestion_overlay,
     )
     st_folium(campus_map, height=620, width=None, returned_objects=[])
 

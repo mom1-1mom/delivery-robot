@@ -89,6 +89,14 @@ class TrafficCongestionModel:
         if "distance" not in columns:
             raise ValueError("Congestion training data must include a distance column.")
 
+        if "edge_id" not in columns:
+            if "way_id" in columns:
+                df["edge_id"] = df["way_id"].astype(str)
+            elif "u" in columns and "v" in columns:
+                df["edge_id"] = df["u"].astype(str) + "_" + df["v"].astype(str)
+            else:
+                df["edge_id"] = "unknown_edge"
+
         target_column = next((col for col in df.columns if col.lower() in TARGET_COLUMNS), None)
         if target_column is None:
             raise ValueError(
@@ -114,6 +122,11 @@ class TrafficCongestionModel:
         )
         highway_dummies = pd.get_dummies(data["highway"].fillna("unknown").astype(str), prefix="highway", dtype=float)
         features = pd.concat([features, highway_dummies], axis=1)
+
+        if "edge_id" in data.columns:
+            edge_dummies = pd.get_dummies(data["edge_id"].fillna("unknown_edge").astype(str), prefix="edge", dtype=float)
+            features = pd.concat([features, edge_dummies], axis=1)
+
         return features
 
     def _make_edge_features(self, edge_data: dict[str, Any], hour: int, weekday: int) -> pd.DataFrame:
@@ -124,6 +137,7 @@ class TrafficCongestionModel:
                     "hour": int(hour),
                     "weekday": int(weekday),
                     "highway": str(edge_data.get("highway", "unknown") or "unknown"),
+                    "edge_id": str(edge_data.get("way_id", edge_data.get("edge_id", "unknown_edge")) or "unknown_edge"),
                 }
             ]
         )

@@ -137,7 +137,7 @@ class TrafficCongestionModel:
                     "hour": int(hour),
                     "weekday": int(weekday),
                     "highway": str(edge_data.get("highway", "unknown") or "unknown"),
-                    "edge_id": str(edge_data.get("way_id", edge_data.get("edge_id", "unknown_edge")) or "unknown_edge"),
+                    "edge_id": str(edge_data.get("edge_id", edge_data.get("way_id", "unknown_edge")) or "unknown_edge"),
                 }
             ]
         )

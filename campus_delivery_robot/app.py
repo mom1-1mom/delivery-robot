@@ -745,6 +745,7 @@ def main() -> None:
                             )
                         )
                         result["trained_predicted_route_time"] = float(result.get("total_cost", 0.0))
+                        result["estimated_time"] = result["trained_predicted_route_time"] / 60.0
                 else:
                     result = plan_multi_stop_route(
                         route_graph,

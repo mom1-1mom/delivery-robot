@@ -134,6 +134,7 @@ def build_graph(nodes: dict[str, dict[str, Any]], ways: list[dict[str, Any]]) ->
                 "highway": highway_type,
                 "name": road_name,
                 "way_id": str(way["id"]),
+                "edge_id": f"{way['id']}_{u}_{v}",
                 "barrier": tags.get("barrier"),
             }
 

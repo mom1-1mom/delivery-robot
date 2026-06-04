@@ -52,7 +52,7 @@ class TrafficCongestionModel:
             random_state=random_state,
         )
 
-        model = RandomForestRegressor(n_estimators=80, random_state=random_state)
+        model = RandomForestRegressor(n_estimators=80, random_state=random_state, n_jobs=-1)
         model.fit(X_train, y_train)
 
         y_pred = model.predict(X_test)
@@ -129,37 +129,71 @@ class TrafficCongestionModel:
 
         return features
 
+    def _edge_feature_record(self, edge_data: dict[str, Any], hour: int, weekday: int) -> dict[str, Any]:
+        return {
+            "distance": float(edge_data.get("distance", 0.0)),
+            "hour": int(hour),
+            "weekday": int(weekday),
+            "highway": str(edge_data.get("highway", "unknown") or "unknown"),
+            "edge_id": str(edge_data.get("edge_id", edge_data.get("way_id", "unknown_edge")) or "unknown_edge"),
+        }
+
     def _make_edge_features(self, edge_data: dict[str, Any], hour: int, weekday: int) -> pd.DataFrame:
+        return self._make_edges_features([edge_data], hour, weekday)
+
+    def _make_edges_features(self, edge_data_list: list[dict[str, Any]], hour: int, weekday: int) -> pd.DataFrame:
         sample = pd.DataFrame(
-            [
-                {
-                    "distance": float(edge_data.get("distance", 0.0)),
-                    "hour": int(hour),
-                    "weekday": int(weekday),
-                    "highway": str(edge_data.get("highway", "unknown") or "unknown"),
-                    "edge_id": str(edge_data.get("edge_id", edge_data.get("way_id", "unknown_edge")) or "unknown_edge"),
-                }
-            ]
+            [self._edge_feature_record(edge_data, hour, weekday) for edge_data in edge_data_list]
         )
         features = self._build_feature_matrix(sample)
         features = features.reindex(columns=self.feature_columns, fill_value=0.0)
         return features
+
+    def _has_cached_prediction(self, edge_data: dict[str, Any], hour: int, weekday: int) -> bool:
+        return (
+            "predicted_travel_time" in edge_data
+            and edge_data.get("predicted_hour") == int(hour)
+            and edge_data.get("predicted_weekday") == int(weekday)
+        )
 
     def predict_edge_travel_time(self, edge_data: dict[str, Any], hour: int, weekday: int = 0) -> float:
         """Predict the travel time for a single graph edge."""
         if not self.trained or self.model is None:
             raise ValueError("TrafficCongestionModel has not been trained.")
 
+        if self._has_cached_prediction(edge_data, hour, weekday):
+            return float(edge_data["predicted_travel_time"])
+
         features = self._make_edge_features(edge_data, hour, weekday)
         predicted = self.model.predict(features)[0]
         return float(max(0.1, predicted))
 
+    def predict_edges_travel_time(
+        self, edge_data_list: list[dict[str, Any]], hour: int, weekday: int = 0
+    ) -> list[float]:
+        """Predict travel times for many graph edges in one model call."""
+        if not self.trained or self.model is None:
+            raise ValueError("TrafficCongestionModel has not been trained.")
+        if not edge_data_list:
+            return []
+
+        features = self._make_edges_features(edge_data_list, hour, weekday)
+        predictions = self.model.predict(features)
+        return [float(max(0.1, predicted)) for predicted in predictions]
+
     def predict_path_travel_time(self, graph: Any, path: list[str], hour: int, weekday: int = 0) -> float:
         """Predict the travel time for a path in the graph."""
         total = 0.0
+        uncached_edges: list[dict[str, Any]] = []
         for u, v in zip(path, path[1:]):
             if graph.has_edge(u, v):
-                total += self.predict_edge_travel_time(graph[u][v], hour, weekday)
+                edge_data = graph[u][v]
+                if self._has_cached_prediction(edge_data, hour, weekday):
+                    total += float(edge_data["predicted_travel_time"])
+                else:
+                    uncached_edges.append(edge_data)
+        if uncached_edges:
+            total += sum(self.predict_edges_travel_time(uncached_edges, hour, weekday))
         return float(total)
 
     def apply_time_of_day_costs(self, graph: Any, hour: int, weekday: int = 0) -> Any:
@@ -168,11 +202,19 @@ class TrafficCongestionModel:
             raise ValueError("TrafficCongestionModel has not been trained.")
 
         adjusted = graph.copy()
-        for _, _, edge_data in adjusted.edges(data=True):
+        edge_items = list(adjusted.edges(data=True))
+        predictions = self.predict_edges_travel_time(
+            [edge_data for _, _, edge_data in edge_items],
+            hour,
+            weekday,
+        )
+
+        for (_, _, edge_data), predicted_time in zip(edge_items, predictions):
             if "static_cost" not in edge_data:
                 edge_data["static_cost"] = float(edge_data.get("cost", edge_data.get("distance", 0.0)))
-            predicted_time = self.predict_edge_travel_time(edge_data, hour, weekday)
             edge_data["predicted_travel_time"] = predicted_time
+            edge_data["predicted_hour"] = int(hour)
+            edge_data["predicted_weekday"] = int(weekday)
             edge_data["cost"] = predicted_time
             edge_data["time_cost"] = predicted_time
         return adjusted

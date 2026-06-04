@@ -60,16 +60,6 @@ def _edge_coords(graph: Any, edge: tuple[str, str]) -> list[list[float]] | None:
     ]
 
 
-def _sample_edges(edges: list[tuple[str, str]], max_edges: int) -> list[tuple[str, str]]:
-    """Sample explored edges while preserving broad search progress order."""
-    if max_edges <= 0:
-        return []
-    if len(edges) <= max_edges:
-        return edges
-    step = max(1, len(edges) // max_edges)
-    return edges[::step][:max_edges]
-
-
 def _add_route_points(campus_map: folium.Map, coords: list[list[float]], max_points: int = 25) -> None:
     """Add small route point markers without overcrowding the map."""
     if len(coords) <= 2:
@@ -288,18 +278,36 @@ def _add_congestion_overlay(
     edge_step = max(1, len(edge_items) // max_edges)
     sampled = edge_items[::edge_step]
 
-    edge_scores: list[float] = []
-    scored_edges: list[tuple[str, str, dict[str, Any], float, float]] = []
+    prediction_items: list[tuple[str, str, dict[str, Any], float]] = []
     for u, v, data in sampled:
         if not data:
             continue
         distance = float(data.get("distance", 0.0))
         if distance <= 0:
             continue
-        try:
-            predicted_time = model.predict_edge_travel_time(data, hour, weekday)
-        except Exception:
-            continue
+        prediction_items.append((u, v, data, distance))
+
+    if not prediction_items:
+        return
+
+    try:
+        if hasattr(model, "predict_edges_travel_time"):
+            predicted_times = model.predict_edges_travel_time(
+                [data for _, _, data, _ in prediction_items],
+                hour,
+                weekday,
+            )
+        else:
+            predicted_times = [
+                model.predict_edge_travel_time(data, hour, weekday)
+                for _, _, data, _ in prediction_items
+            ]
+    except Exception:
+        return
+
+    edge_scores: list[float] = []
+    scored_edges: list[tuple[str, str, dict[str, Any], float, float]] = []
+    for (u, v, data, distance), predicted_time in zip(prediction_items, predicted_times):
         score = predicted_time / max(distance, 1.0)
         edge_scores.append(score)
         scored_edges.append((u, v, data, score, predicted_time))
@@ -342,10 +350,6 @@ def render_multi_stop_map(
     nodes: Any,
     route_result: dict[str, Any] | None,
     poi_lookup: dict[str, dict[str, Any]] | None,
-    show_search_process: bool = False,
-    search_progress: int = 100,
-    final_route_only: bool = True,
-    max_explored_edges: int = 1000,
     congestion_model: Any | None = None,
     departure_hour: int = 0,
     departure_weekday: int = 0,
@@ -382,28 +386,6 @@ def render_multi_stop_map(
         tiles="CartoDB positron",
         control_scale=True,
     )
-
-    if route_result and show_search_process and not final_route_only:
-        explored_edges = route_result.get("all_explored_edges", [])
-        sampled_edges = _sample_edges(explored_edges, max_explored_edges)
-        progress = min(100, max(0, int(search_progress)))
-        visible_count = int(len(sampled_edges) * progress / 100)
-        visible_edges = sampled_edges[:visible_count]
-        current_batch_start = max(0, visible_count - max(20, visible_count // 8))
-
-        explored_group = folium.FeatureGroup(name="Search process", show=True)
-        for index, edge in enumerate(visible_edges):
-            coords = _edge_coords(graph, edge)
-            if not coords:
-                continue
-            is_current = index >= current_batch_start
-            folium.PolyLine(
-                locations=coords,
-                color="#f59e0b" if is_current else "#93c5fd",
-                weight=3 if is_current else 2,
-                opacity=0.55 if is_current else 0.28,
-            ).add_to(explored_group)
-        explored_group.add_to(campus_map)
 
     for segment in segments:
         coords = _route_coords(graph, segment.get("path", []))

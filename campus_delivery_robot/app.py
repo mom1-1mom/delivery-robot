@@ -27,7 +27,9 @@ from src.utils import build_route_table, format_meters, format_seconds, get_grap
 APP_DIR = Path(__file__).resolve().parent
 DEFAULT_OSM_PATH = APP_DIR / "data" / "campus.osm"
 DEFAULT_POI_WHITELIST_PATH = APP_DIR / "data" / "poi_whitelist.csv"
+DEFAULT_CONGESTION_UPLOAD_PATH = APP_DIR / "data" / "uploaded_congestion.csv"
 MAX_DELIVERY_POINTS = 8
+ML_TIME_CALIBRATION = 0.5
 
 ALGORITHM_EXPLANATIONS = {
     "BFS": "BFS finds a route with the fewest graph steps, but it does not consider weighted delivery cost.",
@@ -65,19 +67,46 @@ def apply_page_style() -> None:
         [data-testid="stSidebar"] h3,
         [data-testid="stSidebar"] label,
         [data-testid="stSidebar"] label p,
+        [data-testid="stSidebar"] [data-testid="stExpander"] summary,
+        [data-testid="stSidebar"] [data-testid="stExpander"] summary p,
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"],
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] li,
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] span,
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] strong,
         [data-testid="stSidebar"] .stCaptionContainer,
         [data-testid="stSidebar"] .stCaptionContainer p {
             color: #000000 !important;
+            opacity: 1 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stExpander"],
+        [data-testid="stSidebar"] [data-testid="stFileUploader"],
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] *,
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] button {
+            opacity: 1 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stExpander"],
+        [data-testid="stSidebar"] [data-testid="stExpander"] details,
+        [data-testid="stSidebar"] [data-testid="stExpander"] summary {
+            background: #ffffff !important;
         }
         [data-testid="stSidebar"] [data-testid="stFileUploader"] > div,
         [data-testid="stSidebar"] [data-testid="stFileUploader"] > div > div {
             border: 1px solid #000000 !important;
-            background: #000000 !important;
+            background: #ffffff !important;
         }
         [data-testid="stSidebar"] [data-testid="stFileUploader"] p,
         [data-testid="stSidebar"] [data-testid="stFileUploader"] span,
         [data-testid="stSidebar"] [data-testid="stFileUploader"] label,
         [data-testid="stSidebar"] [data-testid="stFileUploader"] div {
+            color: #000000 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] button {
+            border: 1px solid #000000 !important;
+            background: #000000 !important;
+            color: #ffffff !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stFileUploader"] button * {
             color: #ffffff !important;
         }
         [data-testid="stSidebar"] [data-testid="stAlert"] p {
@@ -316,6 +345,19 @@ def load_traffic_model_from_csv(file_name: str, file_bytes: bytes) -> TrafficCon
     model = TrafficCongestionModel()
     model.train_from_dataframe(dataframe)
     return model
+
+
+def save_uploaded_congestion_csv(file_bytes: bytes) -> None:
+    """Persist the latest uploaded congestion CSV across browser refreshes."""
+    DEFAULT_CONGESTION_UPLOAD_PATH.parent.mkdir(parents=True, exist_ok=True)
+    DEFAULT_CONGESTION_UPLOAD_PATH.write_bytes(file_bytes)
+
+
+def load_saved_congestion_csv() -> bytes | None:
+    """Return the saved congestion CSV bytes if a previous upload exists."""
+    if not DEFAULT_CONGESTION_UPLOAD_PATH.exists():
+        return None
+    return DEFAULT_CONGESTION_UPLOAD_PATH.read_bytes()
 
 
 def format_train_rmse(value: float | None) -> str:
@@ -616,12 +658,26 @@ def main() -> None:
         with st.expander("Traffic congestion model", expanded=False):
             congestion_csv = st.file_uploader("Upload historical congestion CSV", type=["csv"], key="congestion_csv")
             if congestion_csv is not None:
+                congestion_bytes = congestion_csv.getvalue()
                 with st.spinner("Training traffic model..."):
                     try:
-                        congestion_model = load_traffic_model_from_csv(congestion_csv.name, congestion_csv.getvalue())
+                        congestion_model = load_traffic_model_from_csv(congestion_csv.name, congestion_bytes)
+                        save_uploaded_congestion_csv(congestion_bytes)
                         st.success("Traffic model trained.")
                     except Exception as exc:
                         st.error(f"Could not train traffic model: {exc}")
+            else:
+                saved_congestion_bytes = load_saved_congestion_csv()
+                if saved_congestion_bytes is not None:
+                    with st.spinner("Restoring saved traffic model..."):
+                        try:
+                            congestion_model = load_traffic_model_from_csv(
+                                DEFAULT_CONGESTION_UPLOAD_PATH.name,
+                                saved_congestion_bytes,
+                            )
+                            st.success("Restored saved traffic model.")
+                        except Exception as exc:
+                            st.error(f"Could not restore saved traffic model: {exc}")
             show_congestion_overlay = False
             if congestion_model is not None and congestion_model.trained:
                 col1, col2 = st.columns(2)
@@ -638,14 +694,6 @@ def main() -> None:
                 )
 
             render_congestion_model_summary(congestion_model, departure_hour, departure_weekday)
-
-        st.markdown("Search Process Visualization")
-        show_search_process = st.checkbox("Show search process", value=True)
-        final_route_only = st.checkbox("Final route only", value=False)
-        search_progress = 100
-        if show_search_process and not final_route_only:
-            search_progress = st.slider("Search progress", min_value=0, max_value=100, value=100, step=5)
-        max_explored_edges = st.slider("Max explored edges", min_value=100, max_value=3000, value=1000, step=100)
 
     if uploaded_file is None and not DEFAULT_OSM_PATH.exists():
         render_business_metrics(None)
@@ -715,15 +763,6 @@ def main() -> None:
             with st.spinner("Calculating multi-stop route..."):
                 route_graph = apply_route_preferences(graph, prefer_footways=prefer_footways)
                 if congestion_model is not None and congestion_model.trained:
-                    baseline_result = plan_multi_stop_route(
-                        route_graph,
-                        nodes,
-                        start_poi,
-                        delivery_pois,
-                        algorithm_name,
-                        resources.get("positions"),
-                        max_exact_stops=MAX_DELIVERY_POINTS,
-                    )
                     trained_graph = congestion_model.apply_time_of_day_costs(route_graph, departure_hour, departure_weekday)
                     result = plan_multi_stop_route(
                         trained_graph,
@@ -734,18 +773,16 @@ def main() -> None:
                         resources.get("positions"),
                         max_exact_stops=MAX_DELIVERY_POINTS,
                     )
-                    if result.get("success") and baseline_result.get("success"):
-                        result["baseline_route"] = baseline_result
-                        result["baseline_predicted_route_time"] = float(
+                    if result.get("success"):
+                        result["trained_predicted_route_time"] = float(
                             congestion_model.predict_path_travel_time(
-                                route_graph,
-                                baseline_result.get("full_path", []),
+                                trained_graph,
+                                result.get("full_path", []),
                                 departure_hour,
                                 departure_weekday,
                             )
                         )
-                        result["trained_predicted_route_time"] = float(result.get("total_cost", 0.0))
-                        result["estimated_time"] = result["trained_predicted_route_time"] / 60.0
+                        result["estimated_time"] = result["trained_predicted_route_time"] * ML_TIME_CALIBRATION / 60.0
                 else:
                     result = plan_multi_stop_route(
                         route_graph,
@@ -770,10 +807,6 @@ def main() -> None:
         graph,
         preview_result,
         poi_lookup,
-        show_search_process=show_search_process,
-        search_progress=search_progress,
-        final_route_only=final_route_only,
-        max_explored_edges=max_explored_edges,
         congestion_model=congestion_model,
         departure_hour=departure_hour,
         departure_weekday=departure_weekday,

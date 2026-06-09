@@ -252,11 +252,3 @@ AI project/
         `-- utils.py
 ```
 
-## Limitations
-
-- Route quality depends on the completeness of the OSM map and POI whitelist.
-- The congestion model is only as reliable as its uploaded historical data.
-- The delivery fee is a fixed simulation formula.
-- Exact permutation search grows factorially with the number of delivery points.
-- Weather, crowd density, battery status, elevation, stairs, and real-time obstacles are not yet included.
-- A larger city-scale deployment would require more scalable routing and delivery-order optimization methods.

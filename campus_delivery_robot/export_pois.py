@@ -52,29 +52,29 @@ ENABLED_ENGLISH_NAMES = [
     "CSU Student Dormitory",
     "Shenghua Dormitory Buildings 37 and 38",
     "Shenghua Dormitory Clinic",
-    "Shenghua Student Dormitory Building 1 North",
-    "Shenghua Student Dormitory Building 10",
-    "Shenghua Student Dormitory Building 11",
-    "Shenghua Student Dormitory Building 13",
-    "Shenghua Student Dormitory Building 14",
-    "Shenghua Student Dormitory Building 15",
-    "Shenghua Student Dormitory Building 16",
-    "Shenghua Student Dormitory Building 18",
-    "Shenghua Student Dormitory Building 2",
-    "Shenghua Student Dormitory Building 20",
-    "Shenghua Student Dormitory Building 21",
-    "Shenghua Student Dormitory Building 24",
-    "Shenghua Student Dormitory Building 25",
-    "Shenghua Student Dormitory Building 26",
-    "Shenghua Student Dormitory Building 28 North",
-    "Shenghua Student Dormitory Building 28 South",
-    "Shenghua Student Dormitory Building 29",
-    "Shenghua Student Dormitory Building 31",
-    "Shenghua Student Dormitory Building 5",
-    "Shenghua Student Dormitory Building 6",
-    "Shenghua Student Dormitory Building 8",
-    "Shenghua Student Dormitory Building 9",
-    "Shenghua Student Dormitory Building 17",
+    "Dormitory Building 1 North",
+    "Dormitory Building 10",
+    "Dormitory Building 11",
+    "Dormitory Building 13",
+    "Dormitory Building 14",
+    "Dormitory Building 15",
+    "Dormitory Building 16",
+    "Dormitory Building 18",
+    "Dormitory Building 2",
+    "Dormitory Building 20",
+    "Dormitory Building 21",
+    "Dormitory Building 24",
+    "Dormitory Building 25",
+    "Dormitory Building 26",
+    "Dormitory Building 28 North",
+    "Dormitory Building 28 South",
+    "Dormitory Building 29",
+    "Dormitory Building 31",
+    "Dormitory Building 5",
+    "Dormitory Building 6",
+    "Dormitory Building 8",
+    "Dormitory Building 9",
+    "Dormitory Building 17",
     "Shenghua West Entrance",
     "CSU South Campus North Gate",
     "CSU New Campus North Gate",
@@ -160,6 +160,7 @@ def is_noisy_name(name: str) -> bool:
 def component_sizes(graph: nx.Graph) -> dict[str, int]:
     """Map each graph node id to its connected-component size."""
     sizes: dict[str, int] = {}
+    # Component size is used to exclude POIs outside the main routing network.
     for component in nx.connected_components(graph):
         size = len(component)
         for node_id in component:
@@ -201,6 +202,7 @@ def build_rows(osm_path: Path, max_pois: int) -> list[dict[str, Any]]:
     largest_component_size = max(sizes.values(), default=0)
 
     rows: list[dict[str, Any]] = []
+    # Preserve both editable display names and original OSM names in the CSV.
     for poi in pois:
         nearest_node = str(poi.get("nearest_graph_node", ""))
         component_size = sizes.get(nearest_node, 0)
@@ -227,6 +229,7 @@ def build_rows(osm_path: Path, max_pois: int) -> list[dict[str, Any]]:
             }
         )
 
+    # Place recommended, well-connected POIs first for easier manual review.
     rows.sort(key=lambda row: (-int(row["enabled"]), -int(row["component_size"]), row["category"], row["display_name"]))
     apply_default_english_names(rows)
     return rows
@@ -279,4 +282,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

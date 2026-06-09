@@ -236,6 +236,7 @@ def _add_direction_marker(campus_map: folium.Map, coords: list[list[float]], lab
 
 
 def _congestion_color(score: float, thresholds: list[float]) -> str:
+    """Map a seconds-per-meter score to a congestion severity color."""
     if not thresholds or len(thresholds) != 3:
         return "#16a34a"
     if score <= thresholds[0]:
@@ -248,6 +249,7 @@ def _congestion_color(score: float, thresholds: list[float]) -> str:
 
 
 def _add_congestion_legend(campus_map: folium.Map) -> None:
+    """Add a fixed color legend for the predicted congestion overlay."""
     legend_html = """
     <div style="position: fixed; bottom: 20px; left: 20px; width: 170px; z-index:9999; font-size:12px; color: #000;">
         <div style="background: white; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); color: #000;">
@@ -271,10 +273,12 @@ def _add_congestion_overlay(
     weekday: int,
     max_edges: int = 900,
 ) -> None:
+    """Draw a sampled congestion layer using model-predicted edge travel times."""
     edge_items = list(graph.edges(data=True))
     if not edge_items:
         return
 
+    # Sample large graphs to keep the Folium layer responsive.
     edge_step = max(1, len(edge_items) // max_edges)
     sampled = edge_items[::edge_step]
 
@@ -291,6 +295,7 @@ def _add_congestion_overlay(
         return
 
     try:
+        # Prefer batch prediction while retaining compatibility with simple models.
         if hasattr(model, "predict_edges_travel_time"):
             predicted_times = model.predict_edges_travel_time(
                 [data for _, _, data, _ in prediction_items],
@@ -315,6 +320,7 @@ def _add_congestion_overlay(
     if not scored_edges:
         return
 
+    # Quartiles provide relative congestion categories for the current map.
     edge_scores.sort()
     if len(edge_scores) >= 4:
         import statistics
@@ -372,6 +378,7 @@ def render_multi_stop_map(
 
     route_coords = _route_coords(graph, full_path)
     center = None
+    # Center completed routes on their geometry; otherwise use the graph center.
     if route_coords:
         center = (
             sum(coord[0] for coord in route_coords) / len(route_coords),
@@ -387,6 +394,7 @@ def render_multi_stop_map(
         control_scale=True,
     )
 
+    # Draw each delivery leg separately before adding the complete route highlight.
     for segment in segments:
         coords = _route_coords(graph, segment.get("path", []))
         if len(coords) < 2:
@@ -420,6 +428,7 @@ def render_multi_stop_map(
     if congestion_model is not None and show_congestion_overlay:
         _add_congestion_overlay(campus_map, graph, congestion_model, departure_hour, departure_weekday)
 
+    # Fit the viewport to every visible route and delivery marker.
     bounds: list[list[float]] = []
     bounds.extend(route_coords)
     for poi in [start_poi, *delivery_order]:

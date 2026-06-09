@@ -84,6 +84,7 @@ def bfs_search(graph: Any, start: str, goal: str, max_expansions: int = 250_000)
     if start == goal:
         return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
+    # BFS uses a FIFO queue and records each node's predecessor once.
     queue = deque([start])
     parent: dict[str, str | None] = {start: None}
     expanded = 0
@@ -151,6 +152,7 @@ def uniform_cost_search(
     if start == goal:
         return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
+    # The priority queue is ordered by cumulative route cost.
     tie_breaker = count()
     frontier: list[tuple[float, int, str]] = []
     heappush(frontier, (0.0, next(tie_breaker), start))
@@ -193,6 +195,7 @@ def uniform_cost_search(
             neighbor = str(neighbor)
             edge_cost = float(graph[current][neighbor].get("cost", graph[current][neighbor].get("distance", 1.0)))
             new_cost = current_cost + edge_cost
+            # Relax the edge only when a cheaper path to the neighbor is found.
             if new_cost < best_cost.get(neighbor, float("inf")):
                 _record_explored_edge(explored_edges, seen_edges, current, neighbor)
                 best_cost[neighbor] = new_cost
@@ -235,6 +238,7 @@ def astar_search(graph: Any, start: str, goal: str, max_expansions: int = 250_00
     if start == goal:
         return _result([start], 0.0, 0.0, 0, True, "Start and goal are the same node.")
 
+    # A* prioritizes f(n) = g(n) + h(n), with g stored in best_g.
     tie_breaker = count()
     frontier: list[tuple[float, int, str]] = []
     heappush(frontier, (_heuristic(graph, start, goal), next(tie_breaker), start))
@@ -277,6 +281,7 @@ def astar_search(graph: Any, start: str, goal: str, max_expansions: int = 250_00
             neighbor = str(neighbor)
             edge_cost = float(graph[current][neighbor].get("cost", graph[current][neighbor].get("distance", 1.0)))
             tentative_g = best_g[current] + edge_cost
+            # Update the frontier when the new accumulated cost improves g(n).
             if tentative_g < best_g.get(neighbor, float("inf")):
                 _record_explored_edge(explored_edges, seen_edges, current, neighbor)
                 best_g[neighbor] = tentative_g

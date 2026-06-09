@@ -114,6 +114,7 @@ def _build_pairwise_routes(
     all_explored_edges: list[tuple[str, str]] = []
     seen_edges: set[tuple[str, str]] = set()
 
+    # Precompute every directed POI pair so order evaluation is inexpensive.
     for from_index, from_poi in enumerate(important_pois):
         from_node = _poi_node(from_poi)
         for to_index, to_poi in enumerate(important_pois):
@@ -144,6 +145,7 @@ def _exact_delivery_order(
     best_order: list[int] | None = None
     best_cost = float("inf")
 
+    # Evaluate every stop order; each leg cost is read from the pairwise cache.
     for order in permutations(delivery_indices):
         current = 0
         total = 0.0
@@ -175,6 +177,7 @@ def _greedy_delivery_order(
     current = 0
     total = 0.0
 
+    # Select the cheapest reachable next stop at each step.
     while remaining:
         candidates = []
         for next_index in remaining:
@@ -291,9 +294,11 @@ def plan_multi_stop_route(
             return _failure("Two selected delivery points resolve to the same graph node.")
         delivery_nodes.append(node)
 
+    # Stage 1: solve the point-to-point search problems between important POIs.
     important_pois = [start_poi] + delivery_pois
     pairwise_routes, all_explored_edges = _build_pairwise_routes(graph, important_pois, algorithm_name)
 
+    # Stage 2: choose an exact or scalable delivery-order strategy.
     delivery_indices = list(range(1, len(important_pois)))
     if len(delivery_indices) <= max_exact_stops:
         order_result = _exact_delivery_order(delivery_indices, pairwise_routes)
@@ -309,6 +314,7 @@ def plan_multi_stop_route(
             all_explored_edges,
         )
 
+    # Stage 3: concatenate the selected pairwise routes into one delivery route.
     order, _ = order_result
     try:
         segments, full_path, total_distance, total_cost, total_expanded = _compose_segments(
@@ -324,6 +330,7 @@ def plan_multi_stop_route(
     if not full_path:
         return _failure("The planned full path is empty.", perf_counter() - start_time, all_explored_edges)
 
+    # Derive user-facing business metrics from the final route geometry.
     ordered_delivery_pois = [important_pois[index] for index in order]
     estimated_time = _calculate_estimated_time_minutes(graph, full_path)
     delivery_fee = _calculate_delivery_fee(total_distance, len(delivery_pois))

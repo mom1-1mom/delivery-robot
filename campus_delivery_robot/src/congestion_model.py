@@ -24,6 +24,7 @@ class TrafficCongestionModel:
     """A lightweight model for predicting edge travel times from historical data."""
 
     def __init__(self) -> None:
+        """Initialize an empty congestion model and its training metadata."""
         self.model: RandomForestRegressor | None = None
         self.feature_columns: list[str] = []
         self.train_rmse: float | None = None
@@ -45,6 +46,7 @@ class TrafficCongestionModel:
             raise ValueError("Training data must contain at least 10 samples.")
 
         self.train_samples = len(target)
+        # Keep a validation subset so the UI can report an interpretable RMSE.
         X_train, X_test, y_train, y_test = train_test_split(
             features,
             target,
@@ -62,9 +64,11 @@ class TrafficCongestionModel:
         self.trained = True
 
     def _prepare_training_data(self, data: pd.DataFrame) -> pd.DataFrame:
+        """Normalize accepted CSV schemas into the model's canonical columns."""
         df = data.copy()
         columns = {column.lower() for column in df.columns}
 
+        # Accept common aliases so user-provided datasets need minimal cleanup.
         if "hour" not in columns:
             for candidate in ("hour", "time_of_day", "departure_hour", "hour_of_day"):
                 if candidate in columns:
@@ -113,6 +117,7 @@ class TrafficCongestionModel:
         return df
 
     def _build_feature_matrix(self, data: pd.DataFrame) -> pd.DataFrame:
+        """Encode numeric and categorical fields as model-ready features."""
         features = pd.DataFrame(
             {
                 "distance": data["distance"].astype(float),
@@ -130,6 +135,7 @@ class TrafficCongestionModel:
         return features
 
     def _edge_feature_record(self, edge_data: dict[str, Any], hour: int, weekday: int) -> dict[str, Any]:
+        """Convert one graph edge into the raw feature schema used for inference."""
         return {
             "distance": float(edge_data.get("distance", 0.0)),
             "hour": int(hour),
@@ -139,17 +145,22 @@ class TrafficCongestionModel:
         }
 
     def _make_edge_features(self, edge_data: dict[str, Any], hour: int, weekday: int) -> pd.DataFrame:
+        """Build an aligned feature matrix for one graph edge."""
         return self._make_edges_features([edge_data], hour, weekday)
 
     def _make_edges_features(self, edge_data_list: list[dict[str, Any]], hour: int, weekday: int) -> pd.DataFrame:
+        """Build an aligned feature matrix for a batch of graph edges."""
         sample = pd.DataFrame(
             [self._edge_feature_record(edge_data, hour, weekday) for edge_data in edge_data_list]
         )
         features = self._build_feature_matrix(sample)
+        # Match training columns exactly, including one-hot categories not present
+        # in the current prediction batch.
         features = features.reindex(columns=self.feature_columns, fill_value=0.0)
         return features
 
     def _has_cached_prediction(self, edge_data: dict[str, Any], hour: int, weekday: int) -> bool:
+        """Return whether an edge contains a prediction for the requested time."""
         return (
             "predicted_travel_time" in edge_data
             and edge_data.get("predicted_hour") == int(hour)
@@ -177,6 +188,7 @@ class TrafficCongestionModel:
         if not edge_data_list:
             return []
 
+        # Batch inference avoids thousands of expensive per-edge predict calls.
         features = self._make_edges_features(edge_data_list, hour, weekday)
         predictions = self.model.predict(features)
         return [float(max(0.1, predicted)) for predicted in predictions]
@@ -185,6 +197,7 @@ class TrafficCongestionModel:
         """Predict the travel time for a path in the graph."""
         total = 0.0
         uncached_edges: list[dict[str, Any]] = []
+        # Reuse graph-level predictions and batch only the remaining edges.
         for u, v in zip(path, path[1:]):
             if graph.has_edge(u, v):
                 edge_data = graph[u][v]
@@ -203,6 +216,7 @@ class TrafficCongestionModel:
 
         adjusted = graph.copy()
         edge_items = list(adjusted.edges(data=True))
+        # Predict the entire graph in one call before assigning route costs.
         predictions = self.predict_edges_travel_time(
             [edge_data for _, _, edge_data in edge_items],
             hour,
@@ -220,6 +234,7 @@ class TrafficCongestionModel:
         return adjusted
 
     def report(self) -> dict[str, Any]:
+        """Return model status and training metrics for UI presentation."""
         return {
             "trained": self.trained,
             "train_samples": self.train_samples,

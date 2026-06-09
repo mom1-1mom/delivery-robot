@@ -622,6 +622,7 @@ def render_algorithm_explanation(selected_algorithm: str) -> None:
 
 
 def main() -> None:
+    """Run the Streamlit interface and coordinate the complete routing workflow."""
     st.set_page_config(
         page_title="Campus Delivery Robot Route Planner",
         page_icon=":material/route:",
@@ -631,6 +632,7 @@ def main() -> None:
     apply_page_style()
     ensure_delivery_slot_state()
 
+    # Present the project purpose before the interactive routing controls.
     st.markdown(
         """
         <div class="hero-panel">
@@ -661,6 +663,7 @@ def main() -> None:
                 congestion_bytes = congestion_csv.getvalue()
                 with st.spinner("Training traffic model..."):
                     try:
+                        # Persist only a dataset that has passed model training.
                         congestion_model = load_traffic_model_from_csv(congestion_csv.name, congestion_bytes)
                         save_uploaded_congestion_csv(congestion_bytes)
                         st.success("Traffic model trained.")
@@ -671,6 +674,7 @@ def main() -> None:
                 if saved_congestion_bytes is not None:
                     with st.spinner("Restoring saved traffic model..."):
                         try:
+                            # Restore the last valid upload after a browser refresh.
                             congestion_model = load_traffic_model_from_csv(
                                 DEFAULT_CONGESTION_UPLOAD_PATH.name,
                                 saved_congestion_bytes,
@@ -701,6 +705,7 @@ def main() -> None:
         render_algorithm_explanation(algorithm_name)
         return
 
+    # Parse the OSM source and build reusable graph and POI resources.
     try:
         with st.spinner("Building campus graph..."):
             if uploaded_file is not None:
@@ -742,6 +747,7 @@ def main() -> None:
         delivery_pois = selected_delivery_pois(start_poi, pois)
         generate_clicked = st.button("Generate Multi-stop Route", type="primary")
 
+    # The selection key prevents an old result from appearing under new inputs.
     validation_message = validate_delivery_selection(start_poi, delivery_pois)
     selection_key = route_selection_key(
         metadata,
@@ -763,6 +769,7 @@ def main() -> None:
             with st.spinner("Calculating multi-stop route..."):
                 route_graph = apply_route_preferences(graph, prefer_footways=prefer_footways)
                 if congestion_model is not None and congestion_model.trained:
+                    # Replace static edge costs with predicted travel-time costs.
                     trained_graph = congestion_model.apply_time_of_day_costs(route_graph, departure_hour, departure_weekday)
                     result = plan_multi_stop_route(
                         trained_graph,
@@ -782,6 +789,7 @@ def main() -> None:
                                 departure_weekday,
                             )
                         )
+                        # Convert predicted seconds to calibrated display minutes.
                         result["estimated_time"] = result["trained_predicted_route_time"] * ML_TIME_CALIBRATION / 60.0
                 else:
                     result = plan_multi_stop_route(
@@ -801,6 +809,7 @@ def main() -> None:
 
     render_business_metrics(active_result)
 
+    # Always render markers; add route geometry only after successful planning.
     preview_result = active_result or build_preview_result(start_poi, delivery_pois, algorithm_name)
     poi_lookup = {str(poi.get("nearest_graph_node", "")): poi for poi in [start_poi, *delivery_pois]}
     campus_map = render_multi_stop_map(

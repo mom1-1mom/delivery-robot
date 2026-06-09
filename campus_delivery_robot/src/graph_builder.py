@@ -91,6 +91,7 @@ def build_graph(nodes: dict[str, dict[str, Any]], ways: list[dict[str, Any]]) ->
     skipped_missing_edges = 0
     skipped_private_ways = 0
 
+    # Convert each eligible OSM way into edges between consecutive node refs.
     for way in ways:
         tags = way.get("tags", {})
         highway_type = tags.get("highway")
@@ -138,6 +139,7 @@ def build_graph(nodes: dict[str, dict[str, Any]], ways: list[dict[str, Any]]) ->
                 "barrier": tags.get("barrier"),
             }
 
+            # Preserve the cheaper edge when overlapping OSM ways share nodes.
             if graph.has_edge(u, v):
                 if base_cost < float(graph[u][v].get("cost", float("inf"))):
                     graph[u][v].update(edge_data)
@@ -256,6 +258,7 @@ def extract_pois(
 
     candidates: list[dict[str, Any]] = []
 
+    # Named OSM nodes receive the highest POI priority.
     for node_id, node in nodes.items():
         tags = node.get("tags", {})
         name = _preferred_name(tags)
@@ -272,6 +275,7 @@ def extract_pois(
             }
         )
 
+    # Named buildings and amenities are represented by approximate centroids.
     for way in ways:
         tags = way.get("tags", {})
         if not _is_named_poi_way(tags):
@@ -298,6 +302,7 @@ def extract_pois(
     seen_identity = set()
     used_nearest_nodes = set()
 
+    # Deduplicate candidates and snap each POI to a unique routing node.
     for candidate in candidates:
         if len(pois) >= max_pois:
             break
@@ -325,6 +330,7 @@ def extract_pois(
         pois.append(candidate)
         used_nearest_nodes.add(nearest_node)
 
+    # Add evenly sampled graph nodes when the map has too few named POIs.
     if len(pois) < min_named_pois:
         graph_nodes = list(graph.nodes(data=True))
         target_count = min(fallback_count, max_pois)

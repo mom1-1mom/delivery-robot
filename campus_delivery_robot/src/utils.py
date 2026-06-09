@@ -121,6 +121,7 @@ def summarize_major_places(
     seen = set()
 
     def add_name(name: str) -> None:
+        """Append a place name once while preserving route order."""
         if name not in seen:
             seen.add(name)
             ordered_names.append(name)
@@ -136,4 +137,3 @@ def summarize_major_places(
     add_name(str(goal_poi.get("display_name", "Goal")))
 
     return ordered_names[:max_items]
-

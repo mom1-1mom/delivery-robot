@@ -23,29 +23,29 @@
 1,CSU Student Dormitory,中南大学学生公寓,dormitory,1660229551,named_node,28.1589523,112.9317850,3860724154,35.7,1672,recommended
 1,Shenghua Dormitory Buildings 37 and 38,升华公寓 37 38栋,dormitory,1029393714,named_building,28.1649852,112.9290028,9490553994,25.3,1672,recommended
 1,Shenghua Dormitory Clinic,升华公寓医务室,dormitory,5724482046,named_node,28.1615004,112.9308347,9493016110,6.6,1672,recommended
-1,Shenghua Student Dormitory Building 1 North,升华学生公寓 1 栋北,dormitory,381465664,named_building,28.1595894,112.9320048,3860724157,23.2,1672,recommended
-1,Shenghua Student Dormitory Building 10,升华学生公寓 10 栋,dormitory,381465682,named_building,28.1607451,112.9307885,1659009981,18.7,1672,recommended
-1,Shenghua Student Dormitory Building 11,升华学生公寓 11 栋,dormitory,381465663,named_building,28.1610610,112.9306349,3846693955,11.4,1672,recommended
-1,Shenghua Student Dormitory Building 13,升华学生公寓 13 栋,dormitory,381465647,named_building,28.1612641,112.9297908,9490764412,32.2,1672,recommended
-1,Shenghua Student Dormitory Building 14,升华学生公寓 14 栋,dormitory,381465645,named_building,28.1617155,112.9293032,1659009979,18.1,1672,recommended
-1,Shenghua Student Dormitory Building 15,升华学生公寓 15 栋,dormitory,381465657,named_building,28.1620632,112.9289279,1659009962,20.4,1672,recommended
-1,Shenghua Student Dormitory Building 16,升华学生公寓 16 栋,dormitory,381465678,named_building,28.1624251,112.9286621,3846694366,23.9,1672,recommended
-1,Shenghua Student Dormitory Building 18,升华学生公寓 18 栋,dormitory,381465676,named_building,28.1614001,112.9307047,3846693954,19.4,1672,recommended
-1,Shenghua Student Dormitory Building 2,升华学生公寓 2 栋,dormitory,381465674,named_building,28.1599323,112.9318964,3860724155,22.7,1672,recommended
-1,Shenghua Student Dormitory Building 20,升华学生公寓 20 栋,dormitory,381465661,named_building,28.1619434,112.9306747,9493053148,30.9,1672,recommended
-1,Shenghua Student Dormitory Building 21,升华学生公寓 21 栋,dormitory,279349826,named_building,28.1622903,112.9306683,1659009956,33.1,1672,recommended
-1,Shenghua Student Dormitory Building 24,升华学生公寓 24 栋,dormitory,155469202,named_building,28.1626079,112.9307318,1659009978,34.9,1672,recommended
-1,Shenghua Student Dormitory Building 25,升华学生公寓 25 栋,dormitory,381465683,named_building,28.1629407,112.9301362,1659032401,29.9,1672,recommended
-1,Shenghua Student Dormitory Building 26,升华学生公寓 26 栋,dormitory,381465667,named_building,28.1629077,112.9295980,1659032472,16.1,1672,recommended
-1,Shenghua Student Dormitory Building 28 North,升华学生公寓 28 栋北,dormitory,381465652,named_building,28.1634911,112.9280798,5722864488,30.7,1672,recommended
-1,Shenghua Student Dormitory Building 28 South,升华学生公寓 28 栋南,dormitory,381465648,named_building,28.1631430,112.9281839,5722864491,34.6,1672,recommended
-1,Shenghua Student Dormitory Building 29,升华学生公寓 29 栋,dormitory,381465654,named_building,28.1632884,112.9294187,3846694261,16.1,1672,recommended
-1,Shenghua Student Dormitory Building 31,升华学生公寓 31 栋,dormitory,381465675,named_building,28.1639892,112.9292341,9490554010,38.9,1672,recommended
-1,Shenghua Student Dormitory Building 5,升华学生公寓 5 栋,dormitory,381465671,named_building,28.1601728,112.9309282,1659009984,26.2,1672,recommended
-1,Shenghua Student Dormitory Building 6,升华学生公寓 6 栋,dormitory,381465651,named_building,28.1603514,112.9305058,3860723208,26.1,1672,recommended
-1,Shenghua Student Dormitory Building 8,升华学生公寓 8 栋,dormitory,381465639,named_building,28.1607950,112.9313778,5720359856,17.9,1672,recommended
-1,Shenghua Student Dormitory Building 9,升华学生公寓 9 栋,dormitory,381465677,named_building,28.1607860,112.9317698,1659009965,21.1,1672,recommended
-1,Shenghua Student Dormitory Building 17,升华学生公寓17栋,dormitory,381465672,named_building,28.1612336,112.9310810,3846694446,12.2,1672,recommended
+1,Dormitory Building 1 North,升华学生公寓 1 栋北,dormitory,381465664,named_building,28.1595894,112.9320048,3860724157,23.2,1672,recommended
+1,Dormitory Building 10,升华学生公寓 10 栋,dormitory,381465682,named_building,28.1607451,112.9307885,1659009981,18.7,1672,recommended
+1,Dormitory Building 11,升华学生公寓 11 栋,dormitory,381465663,named_building,28.1610610,112.9306349,3846693955,11.4,1672,recommended
+1,Dormitory Building 13,升华学生公寓 13 栋,dormitory,381465647,named_building,28.1612641,112.9297908,9490764412,32.2,1672,recommended
+1,Dormitory Building 14,升华学生公寓 14 栋,dormitory,381465645,named_building,28.1617155,112.9293032,1659009979,18.1,1672,recommended
+1,Dormitory Building 15,升华学生公寓 15 栋,dormitory,381465657,named_building,28.1620632,112.9289279,1659009962,20.4,1672,recommended
+1,Dormitory Building 16,升华学生公寓 16 栋,dormitory,381465678,named_building,28.1624251,112.9286621,3846694366,23.9,1672,recommended
+1,Dormitory Building 18,升华学生公寓 18 栋,dormitory,381465676,named_building,28.1614001,112.9307047,3846693954,19.4,1672,recommended
+1,Dormitory Building 2,升华学生公寓 2 栋,dormitory,381465674,named_building,28.1599323,112.9318964,3860724155,22.7,1672,recommended
+1,Dormitory Building 20,升华学生公寓 20 栋,dormitory,381465661,named_building,28.1619434,112.9306747,9493053148,30.9,1672,recommended
+1,Dormitory Building 21,升华学生公寓 21 栋,dormitory,279349826,named_building,28.1622903,112.9306683,1659009956,33.1,1672,recommended
+1,Dormitory Building 24,升华学生公寓 24 栋,dormitory,155469202,named_building,28.1626079,112.9307318,1659009978,34.9,1672,recommended
+1,Dormitory Building 25,升华学生公寓 25 栋,dormitory,381465683,named_building,28.1629407,112.9301362,1659032401,29.9,1672,recommended
+1,Dormitory Building 26,升华学生公寓 26 栋,dormitory,381465667,named_building,28.1629077,112.9295980,1659032472,16.1,1672,recommended
+1,Dormitory Building 28 North,升华学生公寓 28 栋北,dormitory,381465652,named_building,28.1634911,112.9280798,5722864488,30.7,1672,recommended
+1,Dormitory Building 28 South,升华学生公寓 28 栋南,dormitory,381465648,named_building,28.1631430,112.9281839,5722864491,34.6,1672,recommended
+1,Dormitory Building 29,升华学生公寓 29 栋,dormitory,381465654,named_building,28.1632884,112.9294187,3846694261,16.1,1672,recommended
+1,Dormitory Building 31,升华学生公寓 31 栋,dormitory,381465675,named_building,28.1639892,112.9292341,9490554010,38.9,1672,recommended
+1,Dormitory Building 5,升华学生公寓 5 栋,dormitory,381465671,named_building,28.1601728,112.9309282,1659009984,26.2,1672,recommended
+1,Dormitory Building 6,升华学生公寓 6 栋,dormitory,381465651,named_building,28.1603514,112.9305058,3860723208,26.1,1672,recommended
+1,Dormitory Building 8,升华学生公寓 8 栋,dormitory,381465639,named_building,28.1607950,112.9313778,5720359856,17.9,1672,recommended
+1,Dormitory Building 9,升华学生公寓 9 栋,dormitory,381465677,named_building,28.1607860,112.9317698,1659009965,21.1,1672,recommended
+1,Dormitory Building 17,升华学生公寓17栋,dormitory,381465672,named_building,28.1612336,112.9310810,3846694446,12.2,1672,recommended
 1,Shenghua West Entrance,Shenghua West Entrance,gate,3846694426,named_node,28.1643185,112.9275197,3846694426,0.0,1672,recommended
 1,East Gate Shuttle Stop,东大门;校车停靠站,gate,3860823686,named_node,28.1543327,112.9452421,9457761123,47.1,1672,recommended
 1,CSU South Campus North Gate,中南大学南校区北门,gate,9336861707,named_node,28.1684180,112.9310532,9336861707,0.0,1672,recommended

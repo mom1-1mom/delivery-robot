@@ -59,6 +59,7 @@ def parse_osm_file(osm_path: str | Path) -> tuple[dict[str, dict[str, Any]], lis
         "source_file": str(path),
     }
 
+    # Stream completed XML elements so large OSM files do not require a full DOM.
     for _, element in ET.iterparse(path, events=("end",)):
         tag = _local_name(element.tag)
 
@@ -72,6 +73,7 @@ def parse_osm_file(osm_path: str | Path) -> tuple[dict[str, dict[str, Any]], lis
                 }
             except (KeyError, ValueError):
                 metadata["bounds"] = None
+            # Release parsed XML content as soon as its values are stored.
             element.clear()
 
         elif tag == "node":
@@ -108,4 +110,3 @@ def parse_osm_file(osm_path: str | Path) -> tuple[dict[str, dict[str, Any]], lis
             element.clear()
 
     return nodes, ways, metadata
-

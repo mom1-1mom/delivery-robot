@@ -1,184 +1,123 @@
 # Campus Delivery Robot Route Planner
 
-This project is a runnable MVP for **Campus Delivery Robot Path Planning in Central South University**. It reads local OpenStreetMap `.osm` data, builds a walkable campus road graph, lets users choose one start location and multiple delivery points, plans an optimized multi-stop delivery order, and visualizes the final route plus optional search-process edges on a real map.
+This project is a Streamlit-based campus delivery routing MVP for Central South University. It parses local OpenStreetMap data, builds a walkable road graph, plans optimized multi-stop deliveries, predicts time-dependent edge travel times with machine learning, and visualizes the final route on an interactive Folium map.
 
-## Features
+## Main Features
 
-- Parses local OpenStreetMap `.osm` XML data.
-- Builds a NetworkX graph from campus-friendly roads:
-  - `footway`
-  - `path`
-  - `pedestrian`
-  - `service`
-  - `residential`
-  - `living_street`
-  - `unclassified`
-- Skips `steps` and `access=private` ways for the MVP.
-- Converts consecutive OSM way nodes into weighted graph edges.
-- Uses Haversine distance in meters.
-- Applies a road-type cost multiplier for robot routing.
-- Extracts named POIs from OSM nodes and ways.
-- Falls back to sampled graph nodes if the map has too few named POIs.
-- Implements BFS, Uniform Cost Search, and A* Search manually.
-- Supports multi-stop delivery route planning for up to 8 delivery points.
-- Optimizes delivery order using exact permutation search.
-- Shows search-process visualization with explored edges.
-- Displays business metrics first: estimated time, total distance, and delivery fee.
-- Displays technical metrics: total cost, running time, nodes expanded, algorithm, and route node count.
-- Visualizes start, numbered delivery stops, route segments, and final route with Folium inside Streamlit.
-- Caches parsing and graph building for smoother interaction.
+- Parses local `.osm` XML data.
+- Builds a NetworkX graph from walkable campus roads.
+- Uses Haversine distance to calculate edge lengths in meters.
+- Stores distance, road type, static cost, and predicted travel time on graph edges.
+- Uses NetworkX for graph storage and connectivity only.
+- Implements BFS, Uniform Cost Search, and A* manually.
+- Supports one start point and up to eight delivery points.
+- Optimizes delivery order using pairwise route searches and exact permutation search.
+- Loads cleaned English POI names from `data/poi_whitelist.csv`.
+- Displays the start marker, numbered delivery stops, route segments, final route, and optional congestion overlay.
+- Trains a `RandomForestRegressor` from uploaded historical congestion data.
+- Persists the latest valid congestion CSV across browser refreshes.
+- Uses batch edge prediction and cached graph costs for responsive ML routing.
+- Displays business and technical route metrics.
+
+The former search-process visualization controls and explored-edge map layer have been removed from the current UI.
 
 ## Installation
 
-Create and activate a Python environment if desired, then install dependencies:
+From the repository root:
 
-```bash
-pip install -r requirements.txt
+```powershell
+cd campus_delivery_robot
+python -m venv .venv-win
+.\.venv-win\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-If your system Python blocks global `pip install`, use a virtual environment:
+Required packages are listed in `campus_delivery_robot/requirements.txt`:
 
-```bash
-python -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
+- Streamlit
+- streamlit-folium
+- Folium
+- NetworkX
+- Pandas
+- scikit-learn
 
 ## Run
 
-From this project folder, run:
+Run the application from `campus_delivery_robot`:
 
-```bash
-streamlit run app.py
+```powershell
+.\.venv-win\Scripts\streamlit.exe run app.py
 ```
 
-Then open the local URL shown by Streamlit, usually:
+Then open:
 
 ```text
 http://localhost:8501
 ```
 
-The project includes `.streamlit/config.toml` to disable Streamlit onboarding prompts and usage-stat collection for easier classroom demos.
+The included `.streamlit/config.toml` disables Streamlit usage-stat collection and runs the server in headless mode.
 
-## Data File
-
-Place your OpenStreetMap export here:
+## Data Files
 
 ```text
-data/campus.osm
+campus_delivery_robot/data/
+|-- campus.osm
+|-- poi_whitelist.csv
+|-- sample_congestion.csv
+`-- uploaded_congestion.csv
 ```
 
-This repository is prepared to use `data/campus.osm` by default. You can also upload another `.osm` file from the sidebar in the web app.
+- `campus.osm`: default local campus map.
+- `poi_whitelist.csv`: manually cleaned POIs used by the location selectors.
+- `sample_congestion.csv`: example historical traffic dataset.
+- `uploaded_congestion.csv`: latest valid uploaded training dataset. It is created automatically and excluded from Git.
 
-## How To Plan A Multi-stop Delivery Route
+The application currently uses `data/campus.osm` as its map source.
 
-1. Choose a `Start location`.
-2. Choose one or more `Delivery point` entries in the sidebar.
-3. Click `+ Add Stop` to add another delivery point.
-4. Select `BFS`, `Uniform Cost Search`, or `A* Search`.
-5. Choose whether to show the search process.
+## Route Planning
+
+1. Select BFS, Uniform Cost Search, or A*.
+2. Optionally enable `Prefer footways`.
+3. Select a start location.
+4. Add one or more delivery points.
+5. Optionally upload a congestion CSV and select the departure hour and weekday.
 6. Click `Generate Multi-stop Route`.
 
-The app automatically decides the best delivery order and then joins all route segments into one full delivery route.
-
-## Multi-stop Planning Method
-
-The planner uses two layers:
-
-### 1. Pairwise Route Calculation
-
-For all important points:
+The planner first computes routes between every important POI pair:
 
 ```text
 important_points = [start] + delivery_points
 ```
 
-the selected search algorithm computes routes such as:
+It then evaluates delivery-point permutations and chooses the order with the lowest combined objective. Finally, the selected route segments are joined into one complete delivery path.
 
-```text
-start -> A
-start -> B
-A -> B
-B -> C
-```
-
-Each pairwise search returns:
-
-- path
-- distance
-- cost
-- expanded nodes
-- explored edges
-
-### 2. Delivery Order Optimization
-
-For up to 8 delivery points, the planner tries every possible delivery order and selects the one with the lowest total route objective.
-
-- In `BFS` mode, the order mainly follows the fewest graph steps.
-- In `UCS` mode, the order minimizes weighted route cost.
-- In `A*` mode, the order uses the same weighted cost, while A* speeds up pairwise search with a straight-line heuristic.
-
-## Algorithms
+## Search Algorithms
 
 ### BFS
 
-Breadth-First Search ignores edge weights. It finds a route with the fewest graph steps, which may not be the shortest physical route or cheapest robot route.
+BFS uses a FIFO queue and finds a route with the fewest graph edges. It ignores weighted distance and ML travel-time costs.
 
 ### Uniform Cost Search
 
-Uniform Cost Search uses weighted edge cost. It expands the lowest cumulative-cost frontier node first and returns the lowest-cost route under the road-cost model.
+UCS expands the frontier node with the lowest accumulated edge cost and returns the lowest-cost route under the active cost model.
 
 ### A* Search
 
-A* Search uses:
+A* uses:
 
 ```text
 f(n) = g(n) + h(n)
 ```
 
-- `g(n)`: accumulated weighted route cost
-- `h(n)`: straight-line Haversine distance from the current node to the goal
+- `g(n)`: accumulated graph edge cost.
+- `h(n)`: straight-line Haversine distance to the destination.
 
-A* usually expands fewer nodes than UCS because the heuristic guides the search toward the goal.
+## Static Cost Model
 
-## Search Process Visualization
-
-Each algorithm returns `explored_edges`, which records graph edges touched during search. In the app:
-
-- explored edges are shown as light blue lines
-- the current progress batch is shown in orange
-- the final delivery route is highlighted in green
-- numbered stop markers show the optimized delivery sequence
-
-Use the `Search progress` slider to inspect the search process in stages. Use `Final route only` to hide explored edges and keep the map focused on the final delivery route.
-
-## Metric Definitions
-
-| Metric | Meaning |
-|---|---|
-| Total Distance | Real route length in meters, calculated from OSM coordinates. |
-| Estimated Delivery Time | Distance-based delivery time using a default robot speed of 1.2 m/s and small road-type time penalties. |
-| Delivery Fee | Simulated CNY fee: base fee + distance fee + stop fee. |
-| Total Cost | Internal algorithm objective based on edge weights. For BFS, this is graph-step oriented. |
-| Running Time | Real wall-clock time used by the planner. |
-| Nodes Expanded | Number of graph nodes expanded by the selected search algorithm across all selected route segments. |
-
-## Cost Model
-
-Each graph edge stores:
-
-- `distance`
-- `base_cost`
-- `cost`
-- `highway`
-- `name`
-
-Default cost:
+Each edge initially uses:
 
 ```text
-cost = distance * road_type_multiplier
+edge_cost = distance_m * road_type_multiplier
 ```
-
-Multipliers:
 
 | Road type | Multiplier |
 |---|---:|
@@ -191,53 +130,133 @@ Multipliers:
 | unclassified | 1.5 |
 | steps | excluded |
 
-The cost function is isolated in `src/graph_builder.py`, so later versions can add battery cost, crowd penalty, terrain slope, weather, or delivery urgency.
+When `Prefer footways` is enabled, non-footway and non-pedestrian edges receive an additional `1.15` cost multiplier.
+
+## Traffic Congestion Model
+
+The ML module uses a Random Forest regressor with these features:
+
+- edge distance
+- hour
+- weekday
+- highway type
+- edge identifier
+
+The target column is edge travel time in seconds. Accepted target names include `travel_time`, `travel_time_s`, `duration`, and similar variants.
+
+After training:
+
+```text
+edge.cost = predicted_travel_time_seconds
+```
+
+UCS and A* therefore optimize predicted travel time when the model is active. Predictions for all graph edges are generated in one batch and stored on the adjusted graph.
+
+After a valid CSV is uploaded, it is saved as `data/uploaded_congestion.csv`. Refreshing the browser automatically restores and retrains the model from this file.
+
+## Metrics and Formulas
+
+### Total Distance
+
+```text
+total_distance = sum(edge_distance)
+```
+
+### Total Cost
+
+Without ML, UCS and A* use:
+
+```text
+total_cost = sum(distance * road_type_multiplier)
+```
+
+With ML, UCS and A* use:
+
+```text
+total_cost = sum(predicted_edge_travel_time_seconds)
+```
+
+For BFS:
+
+```text
+total_cost = number_of_graph_edges
+```
+
+### Estimated Delivery Time
+
+Without ML:
+
+```text
+estimated_minutes = weighted_distance / 1.2 / 60
+```
+
+With ML:
+
+```text
+estimated_minutes = predicted_seconds * 0.5 / 60
+```
+
+The current ML display calibration factor is `0.5`.
+
+### Predicted Delivery Fee
+
+The fee is a simulated rule-based value, not an ML prediction:
+
+```text
+predicted_fee = 2.0 + total_distance_km * 1.5 + delivery_count * 0.5
+```
+
+## POI Cleaning
+
+The application prioritizes `data/poi_whitelist.csv` instead of raw OSM names. The CSV supports:
+
+- `enabled`: whether the POI appears in the application.
+- `display_name`: cleaned English name.
+- `original_name`: original OSM name.
+- `nearest_graph_node`: routing node used by the planner.
+- `component_size`: connected-component size used during cleaning.
+
+`export_pois.py` is an offline helper for regenerating the whitelist:
+
+```powershell
+.\.venv-win\Scripts\python.exe export_pois.py --overwrite
+```
+
+The web application does not require this script during normal operation.
 
 ## Project Structure
 
 ```text
-campus_delivery_robot/
-|
-|-- app.py
-|-- requirements.txt
+AI project/
 |-- README.md
-|
-|-- data/
-|   |-- campus.osm
-|
-|-- src/
-|   |-- __init__.py
-|   |-- osm_parser.py
-|   |-- graph_builder.py
-|   |-- algorithms.py
-|   |-- multistop_planner.py
-|   |-- map_renderer.py
-|   |-- utils.py
+|-- TRAFFIC_MODEL_GUIDE.md
+|-- example_traffic_model.py
+`-- campus_delivery_robot/
+    |-- app.py
+    |-- export_pois.py
+    |-- requirements.txt
+    |-- .streamlit/
+    |   `-- config.toml
+    |-- data/
+    |   |-- campus.osm
+    |   |-- poi_whitelist.csv
+    |   `-- sample_congestion.csv
+    `-- src/
+        |-- __init__.py
+        |-- osm_parser.py
+        |-- graph_builder.py
+        |-- algorithms.py
+        |-- multistop_planner.py
+        |-- map_renderer.py
+        |-- congestion_model.py
+        `-- utils.py
 ```
 
-## Common Questions
+## Limitations
 
-### The app says no OSM file was found.
-
-Put your map file at `data/campus.osm`, or upload an `.osm` file in the sidebar.
-
-### There are not many named locations.
-
-Some OSM exports have few named POIs. The app automatically adds sampled graph nodes named `Map Node 1`, `Map Node 2`, and so on.
-
-### A delivery point cannot be routed.
-
-It may belong to a disconnected part of the map graph. Choose delivery points closer to the same campus road network.
-
-### BFS returns a strange route.
-
-That is expected. BFS minimizes graph steps, not meters or weighted robot travel cost. Use UCS or A* for weighted routing.
-
-### Search-process visualization feels slow.
-
-Reduce `Max explored edges` in the sidebar or enable `Final route only`.
-
-### A way references a missing node.
-
-The graph builder skips that edge and continues, so incomplete OSM exports should not crash the app.
-
+- Route quality depends on the completeness of the OSM map and POI whitelist.
+- The congestion model is only as reliable as its uploaded historical data.
+- The delivery fee is a fixed simulation formula.
+- Exact permutation search grows factorially with the number of delivery points.
+- Weather, crowd density, battery status, elevation, stairs, and real-time obstacles are not yet included.
+- A larger city-scale deployment would require more scalable routing and delivery-order optimization methods.
